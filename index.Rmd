@@ -4,8 +4,21 @@ title: "USP 634: Data Analysis I Spring 2017 Syllabus"
 output: html_document
 ---
 
-## Course Website
-https://usp634.github.io
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=F)
+options(scipen=100)
+options(digits=3)
+
+if (!require("pacman")) {install.packages("pacman"); library(pacman)}
+# special installation process for printr as it is not available on CRAN
+pacman::p_load(tidyverse, knitr, readr, pander)
+
+panderOptions("digits", 2)
+panderOptions('round', 2)
+panderOptions('keep.trailing.zeros', TRUE)
+```
+
+Course Website: https://usp634.github.io
 
 ## Room and Times: 
 - **Lecture** 
@@ -75,51 +88,11 @@ The course requirements include assigned readings, four assignments, attendance 
 
 The table below shows by date lecture topics, computer labs, and readings, and dates that assignments will be handed out and due. Supplement readings will be posted on course website.
 
-- Week 1 4/04
-    - Topic: Course Overview; Stats and Research Design
-    - Reading: 
-    - Computer lab: Intro to R & RStudio
-- Week 2 4/11
-    - Topic: Descriptive Statistics 
-    - Readings: Diez, Ch 1	
-    - Computer lab
-    - Deadline: HW1 assigned
-- Week 3 4/18	
-    - Topic: Probability and Distributions
-    - Readings: Diez, Ch 2-3	
-    - Computer lab
-    - Deadline: Initial research proposal due
-- Week 4 4/25
-    - Topic: Foundation for Inferential Statistics
-    - Computer lab	
-    - Readings: Diez, Ch 4
-    - Deadline: HW1 due; HW2 assigned
-- Week 5 5/02	
-    - Topic: Hypothesis Testing for Continuous Variable: t-tests
-    - Computer lab	
-    - Readings: Diez, Ch 5.1-4
-- Week 6 5/09	
-    - Topic: Hypothesis Testing for Categorical Variable: Chi-squared tests
-    - Computer lab	
-    - Readings: Diez, Ch 6	
-    - Deadline: HW2 due; HW3 assigned
-- Week 7 5/16	
-    - Topic: Hypothesis Testing: ANOVA
-    - Computer lab	
-    - Readings: Diez, Ch 5.5	
-    - Deadline: Paper update due
-- Week 8 5/23	
-    - Topic Association and Correlation
-    - Readings: Diez, Ch 7.1
-    - Computer lab	
-    - Deadline: HW3 due; HW4 assigned
-- Week 9 5/30	
-    - Topic: Linear Regression
-    - Readings: Diez, Ch 7.2-4
-    - Computer lab
-- Week 10 6/06	
-    - Final project presentation
-    - Deadline: HW4 due
-- Finals Week	
-    - Tue 6/13 Final project presentation (cont’d) (tentative date)
-    -	Thursday 6/15 Final paper due
+```{r schedule}
+schedule <- read_delim("schedule.csv", delim="|", trim_ws = TRUE)
+schedule <- schedule %>% dplyr::select(Date, Topic, Readings, Lecture, Lab, Deadline)
+pander(schedule, split.cells = 30, split.table = Inf, missing = '', 
+       justify = "left"
+       )
+```
+
