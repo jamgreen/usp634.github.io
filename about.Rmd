@@ -1,0 +1,11 @@
+---
+title: "About This Website and Course"
+author: "Liming Wang"
+date: "4/4/2017"
+output: html_document
+---
+
+
+# Acknowledgements
+
+This website is built with [Rmarkdown by RStudio](http://rmarkdown.rstudio.com/) and powered by [GitHub](www.github.com).
