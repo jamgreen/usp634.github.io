@@ -7,8 +7,8 @@ output: html_document
 
 Data file:
 
-- [californiatod.csv](lab/californiatod.csv)
-- [R markdown](lab/lab01.Rmd)
+- [californiatod.csv](californiatod.csv)
+- [R markdown](lab01.Rmd)
 
 ##Introduction to R
 - Download and Install
