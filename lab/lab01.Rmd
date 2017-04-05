@@ -28,15 +28,15 @@ Downlad the [californiatod.csv](lab/californiatod.csv) file and save in your per
 ```{r}
 #install.packages(readr)
 library(readr)
-catod <- read_csv("californiatod.csv")
+californiatod <- read_csv("californiatod.csv")
 ```
 
-Environment Tab You can see your data by clicking on the Environment Tab in the upper right corner of your RStudio console and clicking the table catod.
+Environment Tab You can see your data by clicking on the Environment Tab in the upper right corner of your RStudio console and clicking the table californiatod.
 
 Create Quick Summary In your console type
 
 ```{r}
-summary(catod)
+summary(californiatod)
 ```
 
 ### Getting to Know Your Dataset: Variable Types
@@ -46,7 +46,7 @@ Look at the output from the dataset summary. We can see that “name”, “regi
 Create a frequency table (nominal variables). We will create a frequency table using the table() function in R for “railtype”. This can be used to get basic frequencies for one or two variables (one for columns and one for rows). Note that the $ operator after the name of the table tells R which column(s) in our dataframe to reference.
 
 ```{r}
-table(catod$railtype)
+table(californiatod$railtype)
 ```
 
 ### Construct Descriptive Statistics
@@ -59,7 +59,7 @@ The methods for analyzing your variables depend on the variable type.
 - Create a Cross-Tabulation Table. To see how rail type breaks down by region we will create a cross-tabulation table for the two categorical variables (railtype and region). Which region has the most light rail TOD sites in this dataset?
 
 ```{r}
-table(catod$railtype, catod$region)
+table(californiatod$railtype, californiatod$region)
 ```
 
 #### Continuous (ordinal or Interval-Ratio) variables 
@@ -67,11 +67,11 @@ table(catod$railtype, catod$region)
 In order to produce summary statistics for continuous variables we will use the summary() function. And to calculate the standard deviation we will use the sd() function.
 
 ```{r}
-summary(catod$density)
+summary(californiatod$density)
 ```
 
 ```{r}
-sd(catod$density)
+sd(californiatod$density)
 ```
 
 An alternative way that will give us summary statistics for all of the continuous variables in our dataframe in a neat table is to use the stargazer pacakge.
@@ -83,7 +83,7 @@ Compare the mean density to the minimum and maximum value for transit usage. Is 
 #install.packages("stargazer")
 library(stargazer)
 
-stargazer(catod, type = "text")
+stargazer(californiatod, type = "text")
 ```
 
 Let’s explore further. This time we will include the skewness and kurtosis of our summary stats. (we will use the psych package for this)
@@ -97,7 +97,7 @@ Let’s explore further. This time we will include the skewness and kurtosis of 
 
 library(psych)
 
-describe(catod)
+describe(californiatod)
 ```
 
 #### Histograms
@@ -105,12 +105,12 @@ describe(catod)
 As with all things in R there are multiple ways to get to the same spot. We will make a histogram in order to look at the distribution of transit usage frequency using base R commands and then using the ggplot2 package.
 
 ```{r}
-hist(catod$transit, main="Histogram of Transit Usage", xlab = "Transit Usage")
+hist(californiatod$transit, main="Histogram of Transit Usage", xlab = "Transit Usage")
 
 #install.packages("ggplot2")
 library(ggplot2)
 
-p1 <- ggplot(catod, aes(x = transit))
+p1 <- ggplot(californiatod, aes(x = transit))
 p1 + geom_histogram()
 ```
 
@@ -122,14 +122,14 @@ A scatterplot will show us the relationship between two continuous variables. Ag
 ```{r}
 #comparing transit usage and houseval
 
-plot(catod$transit, catod$houseval)
+plot(californiatod$transit, californiatod$houseval)
 
 
 #we will install the "scales" package so we can label
 # our Y axis in dollars
 #install.packages("scales")
 library(scales)
-p2 <- ggplot(catod, aes(x=transit, y = houseval))
+p2 <- ggplot(californiatod, aes(x=transit, y = houseval))
 p2 + geom_point() + scale_y_continuous(labels = scales::dollar)
 ```
 
@@ -149,13 +149,13 @@ Then we will measure the two-way cross tab of these two categorical variables wi
 #install.packages("dplyr")
 library(dplyr)
 
-table(catod$region, catod$railtype)
+table(californiatod$region, californiatod$railtype)
 
-catod %>% group_by(region, railtype) %>%
+californiatod %>% group_by(region, railtype) %>%
   summarise(avg_transit = mean(transit))
 ```
 
-The dplyr package is designed to perform table operations on dataframes for data manipulation and some summarization. The preceding syntax told R to take our catod dataframe, group by the variables for region and railtype, and then calculate the mean transit usage from there. This is similar to the kind of pivot table operations one can do in excel.
+The dplyr package is designed to perform table operations on dataframes for data manipulation and some summarization. The preceding syntax told R to take our californiatod dataframe, group by the variables for region and railtype, and then calculate the mean transit usage from there. This is similar to the kind of pivot table operations one can do in excel.
 
 ## Other Useful Tidbits
 
