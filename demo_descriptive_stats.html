@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Liming Wang" />
+
+<meta name="date" content="2017-04-11" />
+
+<title>USP 634: Descriptive Stats</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<script src="site_libs/htmlwidgets-0.8/htmlwidgets.js"></script>
+<link href="site_libs/plotlyjs-1.16.3/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotlyjs-1.16.3/plotly-latest.min.js"></script>
+<script src="site_libs/plotly-binding-4.5.6/plotly.js"></script>
+
+<meta name="description" content="USP 634 Data Analysis I at Portland State Univeristy" />
+
+<script type="text/javascript" src="js/rmarkdown.js"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-38176783-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="css/rmarkdown.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">USP 634: Data Analysis I</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">USP 634: Descriptive Stats</h1>
+<h4 class="author"><em>Liming Wang</em></h4>
+<h4 class="date"><em>April 11, 2017</em></h4>
+
+</div>
+
+
+<p>This tutorial requires the following R packages; install and load them if you have not yet:</p>
+<pre class="r"><code>if (!require(&quot;pacman&quot;)) {install.packages(&quot;pacman&quot;); library(pacman)}</code></pre>
+<pre><code>## Loading required package: pacman</code></pre>
+<pre class="r"><code>pacman::p_load(&quot;moments&quot;, &quot;ggplot2&quot;, &quot;knitr&quot;, &quot;printr&quot;, &quot;plotly&quot;, &quot;scales&quot;)</code></pre>
+<div id="type-of-variables" class="section level2">
+<h2><span class="header-section-number">0.1</span> Type of Variables</h2>
+<p>Question: What is the type for each of the variables in the TOD dataset?</p>
+<pre class="r"><code>californiatod &lt;- read.csv(&quot;lab/californiatod.csv&quot;); attach(californiatod)
+head(californiatod)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">name</th>
+<th align="left">region</th>
+<th align="right">transit</th>
+<th align="right">density</th>
+<th align="right">houseval</th>
+<th align="left">railtype</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Archstone Barrington Hills Apartments</td>
+<td align="left">Bay Area</td>
+<td align="right">0.4000</td>
+<td align="right">3.36</td>
+<td align="right">192593.3</td>
+<td align="left">Heavy or commuter rail</td>
+</tr>
+<tr class="even">
+<td align="left">Archstone Mission Va</td>
+<td align="left">SD</td>
+<td align="right">0.1077</td>
+<td align="right">2.18</td>
+<td align="right">203054.6</td>
+<td align="left">Light rail</td>
+</tr>
+<tr class="odd">
+<td align="left">Atherton Place</td>
+<td align="left">Bay Area</td>
+<td align="right">0.5000</td>
+<td align="right">5.21</td>
+<td align="right">217671.5</td>
+<td align="left">Heavy or commuter rail</td>
+</tr>
+<tr class="even">
+<td align="left">Bellamar Apartments</td>
+<td align="left">LA</td>
+<td align="right">0.3178</td>
+<td align="right">10.05</td>
+<td align="right">117255.9</td>
+<td align="left">Light rail</td>
+</tr>
+<tr class="odd">
+<td align="left">Coggins Square</td>
+<td align="left">Bay Area</td>
+<td align="right">0.5278</td>
+<td align="right">4.68</td>
+<td align="right">270554.7</td>
+<td align="left">Heavy or commuter rail</td>
+</tr>
+<tr class="even">
+<td align="left">Del Norte Place</td>
+<td align="left">Bay Area</td>
+<td align="right">0.6429</td>
+<td align="right">4.91</td>
+<td align="right">229335.6</td>
+<td align="left">Heavy or commuter rail</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="univariate" class="section level2">
+<h2><span class="header-section-number">0.2</span> Univariate</h2>
+<p>Descriptive Stats for a single variable</p>
+<div id="numerical-variable" class="section level3">
+<h3><span class="header-section-number">0.2.1</span> Numerical variable</h3>
+<div id="quantitative-measures" class="section level4">
+<h4><span class="header-section-number">0.2.1.1</span> Quantitative measures</h4>
+<p>Common quantitative descriptive measures include mean, standard deviation (variance), median, IQR Skewness and Kurtosis are measures comparing the distribution of the variable of interest to a normal distribution.</p>
+<pre class="r"><code>mean(density)</code></pre>
+<pre><code>## [1] 5.36</code></pre>
+<pre class="r"><code>sd(density)</code></pre>
+<pre><code>## [1] 3.531352</code></pre>
+<pre class="r"><code>#range
+max(density) - min(density)</code></pre>
+<pre><code>## [1] 13.13</code></pre>
+<pre class="r"><code># robust measures
+median(density)</code></pre>
+<pre><code>## [1] 4.335</code></pre>
+<pre class="r"><code>IQR(density)</code></pre>
+<pre><code>## [1] 1.91</code></pre>
+<pre class="r"><code># skewness &amp; kurtosis (from the moments package)
+skewness(density)</code></pre>
+<pre><code>## [1] 1.626587</code></pre>
+<pre class="r"><code>kurtosis(density)</code></pre>
+<pre><code>## [1] 4.732171</code></pre>
+</div>
+<div id="visualization" class="section level4">
+<h4><span class="header-section-number">0.2.1.2</span> Visualization</h4>
+<ul>
+<li>Histogram</li>
+</ul>
+<p>Histogram is a graphical representation of the distribution of numerical variables.</p>
+<pre class="r"><code>require(ggplot2)
+qplot(density, geom=&quot;histogram&quot;)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="demo_descriptive_stats_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code># The default bin width is set to range/30 in qplot and it doesn&#39;t look good. Let&#39;s set it to 2
+# You can experiment it with different values
+qplot(density, geom=&quot;histogram&quot;, binwidth=2)</code></pre>
+<p><img src="demo_descriptive_stats_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
+<pre class="r"><code># show percentage
+hist.percent &lt;- ggplot(californiatod, aes(x=density)) +  
+        geom_histogram(aes(y=(..count..)/sum(..count..)), binwidth = 2) + 
+        scale_y_continuous(labels=percent) + labs(y=&quot;&quot;)
+hist.percent</code></pre>
+<p><img src="demo_descriptive_stats_files/figure-html/unnamed-chunk-2-3.png" width="672" /></p>
+<pre class="r"><code># with normal curve superimposed
+hist.percent + stat_function(fun=dnorm, args=list(mean=mean(californiatod$density), sd=sd(californiatod$density)))</code></pre>
+<p><img src="demo_descriptive_stats_files/figure-html/unnamed-chunk-2-4.png" width="672" /></p>
+<ul>
+<li>Box plot</li>
+</ul>
+<pre class="r"><code>qplot(&#39;all&#39;, y=density, geom=&quot;boxplot&quot;)</code></pre>
+<p><img src="demo_descriptive_stats_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+</div>
+</div>
+<div id="categorical-variable" class="section level3">
+<h3><span class="header-section-number">0.2.2</span> Categorical variable</h3>
+<div id="quantitative-measures-1" class="section level4">
+<h4><span class="header-section-number">0.2.2.1</span> Quantitative measures</h4>
+<pre class="r"><code>table(region) # counts</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Bay Area</th>
+<th align="right">LA</th>
+<th align="right">Sacramento</th>
+<th align="right">SD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">13</td>
+<td align="right">6</td>
+<td align="right">2</td>
+<td align="right">5</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>options(digits=2) # only show 2 decimal places
+prop.table(table(region)) #share</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Bay Area</th>
+<th align="right">LA</th>
+<th align="right">Sacramento</th>
+<th align="right">SD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0.5</td>
+<td align="right">0.23</td>
+<td align="right">0.08</td>
+<td align="right">0.19</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="visualization-1" class="section level4">
+<h4><span class="header-section-number">0.2.2.2</span> Visualization</h4>
+<ul>
+<li>Bar plot</li>
+</ul>
+<pre class="r"><code>qplot(region, geom=&quot;bar&quot;) # counts</code></pre>
+<p><img src="demo_descriptive_stats_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code># in percentage scale
+ggplot(californiatod, aes(x=region)) +  
+        geom_bar(aes(y=(..count..)/sum(..count..))) + 
+        scale_y_continuous(labels=percent) + labs(y=&quot;&quot;)</code></pre>
+<p><img src="demo_descriptive_stats_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+</div>
+</div>
+</div>
+<div id="two-variables" class="section level2">
+<h2><span class="header-section-number">0.3</span> Two variables</h2>
+<p>Quantitative measures for the relationship between a pair of variables will be covered later. We will focus on visualization here.</p>
+<div id="numerical-variable-explanatory-numerical-variable-response" class="section level3">
+<h3><span class="header-section-number">0.3.1</span> Numerical Variable (explanatory) –&gt; Numerical Variable (response)</h3>
+<ul>
+<li>Scatter plot</li>
+</ul>
+<pre class="r"><code>qplot(density, houseval, geom=&quot;point&quot;) </code></pre>
+<p><img src="demo_descriptive_stats_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>qplot(transit, houseval, geom=&quot;point&quot;) </code></pre>
+<p><img src="demo_descriptive_stats_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<ul>
+<li>Scatter plot with a trend line</li>
+</ul>
+<pre class="r"><code>qplot(density, houseval, geom=&quot;point&quot;) + geom_smooth(method=lm, se=FALSE)</code></pre>
+<p><img src="demo_descriptive_stats_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>qplot(transit, houseval, geom=&quot;point&quot;) + geom_smooth(method=lm, se=FALSE)</code></pre>
+<p><img src="demo_descriptive_stats_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+<ul>
+<li>Scatter plot with interactive information</li>
+</ul>
+<pre class="r"><code>plot.int &lt;- ggplot(californiatod, aes(transit, houseval, text=paste(&quot;name:&quot;, name))) + geom_point()
+ggplotly(plot.int)</code></pre>
+<div id="htmlwidget-c09573e7ecacf9a4e480" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c09573e7ecacf9a4e480">{"x":{"data":[{"x":[0.400000005960464,0.107699997723103,0.5,0.317799985408783,0.527800023555756,0.642899990081787,0.606100022792816,0,0.147499993443489,0.173800006508827,0,0,0.0666999965906143,0.317799985408783,0.153799995779991,0.1875,0.131600007414818,0.1891999989748,0.491200000047684,0.111100003123283,0.473699986934662,0.209999993443489,0.333299994468689,0.10530000180006,0.222200006246567,0.157900005578995],"y":[192593.26,203054.65,217671.52,117255.94,270554.72,229335.59,270207.4,121785.96,323496.98,667661.04,357694.13,118401.77,779791.98,271728.59,273004.39,246330.4,558643.3,192739.76,327738.97,207159.11,270087.94,371469.76,288948.71,216780.07,152840.33,89045.74],"text":["transit: 0.4<br>houseval: 192593.26<br>name: Archstone Barrington Hills Apartments","transit: 0.11<br>houseval: 203054.65<br>name: Archstone Mission Va","transit: 0.5<br>houseval: 217671.52<br>name: Atherton Place","transit: 0.32<br>houseval: 117255.94<br>name: Bellamar Apartments","transit: 0.53<br>houseval: 270554.72<br>name: Coggins Square","transit: 0.64<br>houseval: 229335.59<br>name: Del Norte Place","transit: 0.61<br>houseval: 270207.4<br>name: Iron Horse Lofts","transit: 0<br>houseval: 121785.96<br>name: Mercado Apartments","transit: 0.15<br>houseval: 323496.98<br>name: Mission Wells","transit: 0.17<br>houseval: 667661.04<br>name: Northpark Apartments","transit: 0<br>houseval: 357694.13<br>name: Ohlone-Chynoweith","transit: 0<br>houseval: 118401.77<br>name: Pacific Court","transit: 0.07<br>houseval: 779791.98<br>name: Palo Alto Condos","transit: 0.32<br>houseval: 271728.59<br>name: Park Regency","transit: 0.15<br>houseval: 273004.39<br>name: Poinsettia Station","transit: 0.19<br>houseval: 246330.4<br>name: Studio Village","transit: 0.13<br>houseval: 558643.3<br>name: The Crossings","transit: 0.19<br>houseval: 192739.76<br>name: Union Square Condos","transit: 0.49<br>houseval: 327738.97<br>name: Verandas Apartments","transit: 0.11<br>houseval: 207159.11<br>name: Villages of LaMesa","transit: 0.47<br>houseval: 270087.94<br>name: Wayside Plaza","transit: 0.21<br>houseval: 371469.76<br>name: Western Carlton","transit: 0.33<br>houseval: 288948.71<br>name: Wilcox Apartments","transit: 0.11<br>houseval: 216780.07<br>name: Wilshire Promenade","transit: 0.22<br>houseval: 152840.33<br>name: Windsor Ridge","transit: 0.16<br>houseval: 89045.74<br>name: Woodlake Close"],"key":null,"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","name":""}],"layout":{"margin":{"t":26.2283105022831,"r":7.30593607305936,"b":40.1826484018265,"l":54.7945205479452},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"type":"linear","autorange":false,"tickmode":"array","range":[-0.0321449995040894,0.675044989585876],"ticktext":["0.0","0.2","0.4","0.6"],"tickvals":[0,0.2,0.4,0.6],"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":"transit","titlefont":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"type":"linear","autorange":false,"tickmode":"array","range":[54508.428,814329.292],"ticktext":["2e+05","4e+05","6e+05","8e+05"],"tickvals":[200000,400000,600000,800000],"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":"houseval","titlefont":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"modeBarButtonsToRemove":["sendDataToCloud"]},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":[]}</script>
+</div>
+<div id="categorical-variable-numerical-variable" class="section level3">
+<h3><span class="header-section-number">0.3.2</span> Categorical Variable –&gt; Numerical Variable</h3>
+<ul>
+<li>Box plot</li>
+</ul>
+<pre class="r"><code>qplot(railtype, houseval, geom=&quot;boxplot&quot;) </code></pre>
+<p><img src="demo_descriptive_stats_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>qplot(region, houseval, geom=&quot;boxplot&quot;) </code></pre>
+<p><img src="demo_descriptive_stats_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+<pre class="r"><code># Bar plot, but with less information (only mean)
+ggplot(californiatod, aes(railtype, houseval)) + geom_bar(stat = &quot;identity&quot;)</code></pre>
+<p><img src="demo_descriptive_stats_files/figure-html/unnamed-chunk-9-3.png" width="672" /></p>
+<pre class="r"><code>ggplot(californiatod, aes(region, houseval)) + geom_bar(stat=&quot;identity&quot;)</code></pre>
+<p><img src="demo_descriptive_stats_files/figure-html/unnamed-chunk-9-4.png" width="672" /></p>
+<pre class="r"><code># We can try scatter plot even though not ideal
+qplot(railtype, houseval, geom=&quot;point&quot;) </code></pre>
+<p><img src="demo_descriptive_stats_files/figure-html/unnamed-chunk-9-5.png" width="672" /></p>
+<pre class="r"><code>qplot(region, houseval, geom=&quot;point&quot;) </code></pre>
+<p><img src="demo_descriptive_stats_files/figure-html/unnamed-chunk-9-6.png" width="672" /></p>
+</div>
+<div id="numerical-variable-categorical-variable" class="section level3">
+<h3><span class="header-section-number">0.3.3</span> Numerical Variable –&gt; Categorical Variable</h3>
+<ul>
+<li>Scatter plot, no easy solution</li>
+</ul>
+<pre class="r"><code>qplot(transit, railtype, geom=&quot;point&quot;)</code></pre>
+<p><img src="demo_descriptive_stats_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre class="r"><code>qplot(density, railtype, geom=&quot;point&quot;)</code></pre>
+<p><img src="demo_descriptive_stats_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
+</div>
+<div id="categorical-variable-categorical-variable" class="section level3">
+<h3><span class="header-section-number">0.3.4</span> Categorical Variable –&gt; Categorical Variable</h3>
+<ul>
+<li>Bar plot</li>
+</ul>
+<pre class="r"><code>qplot(region, fill=railtype, geom=&quot;bar&quot;)</code></pre>
+<p><img src="demo_descriptive_stats_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<pre class="r"><code># show percentage
+ggplot(californiatod, aes(x=region, fill=railtype)) +  
+        geom_bar(aes(y=(..count..)/sum(..count..))) + 
+        scale_y_continuous(labels=percent) + labs(y=&quot;&quot;)</code></pre>
+<p><img src="demo_descriptive_stats_files/figure-html/unnamed-chunk-11-2.png" width="672" /></p>
+<pre class="r"><code># compare with scatter plots, not ideal for working with categorical variables, even when the data points are jittered
+qplot(region, railtype, geom=&quot;point&quot;)</code></pre>
+<p><img src="demo_descriptive_stats_files/figure-html/unnamed-chunk-11-3.png" width="672" /></p>
+<pre class="r"><code>qplot(region, railtype, geom=&quot;point&quot;) + geom_jitter()</code></pre>
+<p><img src="demo_descriptive_stats_files/figure-html/unnamed-chunk-11-4.png" width="672" /></p>
+<ul>
+<li>Cross tabulation of two categorical variables</li>
+</ul>
+<pre class="r"><code>table(railtype, region) # counts</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">railtype/region</th>
+<th align="right">Bay Area</th>
+<th align="right">LA</th>
+<th align="right">Sacramento</th>
+<th align="right">SD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Heavy or commuter rail</td>
+<td align="right">12</td>
+<td align="right">4</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Light rail</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">4</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>options(digits=2) # only show 2 decimal places
+prop.table(table(railtype, region), 2) #share</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">railtype/region</th>
+<th align="right">Bay Area</th>
+<th align="right">LA</th>
+<th align="right">Sacramento</th>
+<th align="right">SD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Heavy or commuter rail</td>
+<td align="right">0.92</td>
+<td align="right">0.67</td>
+<td align="right">0</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="even">
+<td align="left">Light rail</td>
+<td align="right">0.08</td>
+<td align="right">0.33</td>
+<td align="right">1</td>
+<td align="right">0.8</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="learn-more" class="section level2">
+<h2><span class="header-section-number">0.4</span> Learn more</h2>
+<ul>
+<li><a href="http://www.cookbook-r.com/Graphs/">R Graphs Cookbook (ggplot2)</a></li>
+<li><a href="https://www.datacamp.com/courses/data-visualization-with-ggplot2-1">Data Visualization with ggplot2</a></li>
+<li><a href="https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf">ggplot cheatsheet</a></li>
+</ul>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+
+</body>
+</html>
