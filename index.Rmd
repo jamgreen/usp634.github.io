@@ -1,6 +1,8 @@
 ---
 title: 'USP 634: Data Analysis I Spring 2017 Syllabus'
-output: html_document
+output: 
+  html_document:
+    toc: true
 ---
 
 ```{r setup, include=FALSE}
