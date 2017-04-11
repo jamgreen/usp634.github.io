@@ -19,7 +19,7 @@ panderOptions('keep.trailing.zeros', TRUE)
 
 Course Website: https://usp634.github.io
 
-## Room and Times: 
+## Room and Times
 - **Lecture** 
      URBN 220, Tuesdays 4:00 - 6:30pm
 - **Computer Lab**: 
@@ -40,11 +40,11 @@ Prerequisite: College-level algebra, introductory probability and statistics and
 
 Classes will be a combination of lectures, discussion and computer labs.  Students are expected to read assigned readings before class and to participate in class discussions. Homework assignments will be given and analysis of these assignments will be the basis for some class discussion during the class following their due date, so it is essential to complete assignments on time. 
 
-## Software: 
+## Software
 
 The assignments for this course will use the R statistical software (or your choice of other stats software, such as SAS, SPSS, or Stata). The lab instructions will use R. The software is installed on the lab computers across the campus. R is free and available for download at http://cran.r-project.org. We will use a RStudio (https://www.rstudio.com/) as our main interface to R. Labs will be offered weekly to assist in using R to complete the assignments and R examples will be used during regular sessions. Jamaal and I can provide additional assistance to with the software. If you plan to use other software, we will provide as much assistance as we can.
 
-## Textbook and Readings: 
+## Textbook and Readings
 
 The recommended textbook for the course is 
 
@@ -58,7 +58,7 @@ Optional textbooks are:
 
 There will also be supplemental readings that will be available for download from the course website.
 
-## Grading: 
+## Grading
 
 The course requirements include assigned readings, four assignments, attendance and class participation, and a research paper.
 
