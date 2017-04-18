@@ -14,7 +14,7 @@ Data file:
 
 Open RStudio, set your working directory using either **setwd()** or using RStudio's mune click "Session" -> "Set Working Directory" -> "Choose Directory"
 
-Download the [calitod csv](californiatod.csv) and save it to your working directory. Import and name the csv "calitod". To remind yourself about the variable types of your dataframe use the **str()** function. Type str(**"name of df"**) and basic information regarding variable will be displayed. Remember that we have both categorical variables (called "factors" in R) and continuous/interval variables.
+Download the [californiatod csv](californiatod.csv) and save it to your working directory. Import and name the csv "californiatod". To remind yourself about the variable types of your dataframe use the **str()** function. Type str(**"name of df"**) and basic information regarding variable will be displayed. Remember that we have both categorical variables (called "factors" in R) and continuous/interval variables.
 
 #Construct Descriptive Statistics
 
@@ -35,9 +35,9 @@ In order to see how rail type breaks down by region we will create a cross-tabul
 if(!require(pacman)){install.packages("pacman"); library(pacman)}
 p_load(readr, psych, dplyr, stargazer, scales, ggplot2,  vcd)
 
-calitod <- read_csv("californiatod.csv")
+californiatod <- read_csv("californiatod.csv")
 
-table(calitod$railtype, calitod$region)
+table(californiatod$railtype, californiatod$region)
 
 ```
 
@@ -46,9 +46,7 @@ table(calitod$railtype, calitod$region)
 A mosaic plot help you to visualize the relationship between categorical variables. In order to create a mosaic plaot we will use the **vcd** package, a package used for categorical data analysis.
 
 ```{r, echo=TRUE, message=FALSE, warning=FALSE}
-
-mosaic(calitod$region ~ calitod$railtype , main = "Railtype by Region in California")
-
+mosaic(region ~ railtype, californiatod, main = "Railtype by Region in California")
 ```
 
 *Continuous (ordinal or Interval-Ratio) variables*
@@ -57,9 +55,9 @@ In order to produce summary statistics for continuous variables we will use the 
 
 ```{r, echo=TRUE, message=FALSE, warning=FALSE}
 
-summary(calitod$density)
+summary(californiatod$density)
 
-sd(calitod$density)
+sd(californiatod$density)
 
 ```
 
@@ -73,7 +71,7 @@ Compare the mean density to the minimum and maximum values for transit usage. Is
 #for this lab I am outputting to an html format for display purposes.
 #For your lab choose type = text for readability
 
-stargazer(calitod, type = "html")
+stargazer(as.data.frame(californiatod), type = "html")
 
 ```
 
@@ -83,7 +81,7 @@ Let's explore further. This time we will include the skewness and kurtosis of ou
 
 #the psych package gives us an even broader array of summary functions
 
-describe(calitod)
+describe(californiatod)
 
 ```
 
@@ -93,11 +91,11 @@ As with all things in R there are multiple ways to get to the same spot. We will
 
 ```{r, echo=TRUE, warning=FALSE, message = FALSE}
 
-hist(calitod$transit, main = "Histogram of Transit Usage", xlab = "Transit Usage")
+hist(californiatod$transit, main = "Histogram of Transit Usage", xlab = "Transit Usage")
 
 #the ggplot way
 
-p1 <- ggplot(calitod, aes(x = transit)) 
+p1 <- ggplot(californiatod, aes(x = transit)) 
 p1 + geom_histogram()
 
 ```
@@ -112,12 +110,12 @@ A scatterplot will show us the relationship between two continuous variables. Ag
 
 #comparing transit usage and houseval
 
-plot(calitod$transit, calitod$houseval)
+plot(californiatod$transit, californiatod$houseval)
 
 #we will use the labeling features from the scales package in order to label our
 # y axis in dollars
 
-p2 <- ggplot(calitod, aes(x = transit, y = houseval))
+p2 <- ggplot(californiatod, aes(x = transit, y = houseval))
 p2 + geom_point() + scale_y_continuous(labels = scales::dollar)
 
 ```
@@ -135,7 +133,7 @@ Run a two-way cross-tabulation for each of the following questions:
 
 #the base R two-way crosstab
 
-table(calitod$region, calitod$railtype)
+table(californiatod$region, californiatod$railtype)
 
 ```
 
@@ -146,12 +144,12 @@ Now we will do something a bit more complicated. We will create a new two-way cr
 #the dplyr way
 #we will first calculate our cross tabs and then the mean of transit usage
 
-calitod %>% group_by(region, railtype) %>%
+californiatod %>% group_by(region, railtype) %>%
   summarise(RailType = n(), AvgTransit = mean(transit))
 
 ```
 
-The *dplyr* package is designed to perform table operations on dataframes for multiple kinds of data manipulation. The preceding syntax told R to take our calitod dataframe, group by the variables for region and railtype, and the calculate the mean transit usage from there. This is similar to the kind of pivot table operations once can do in excel.
+The *dplyr* package is designed to perform table operations on dataframes for multiple kinds of data manipulation. The preceding syntax told R to take our californiatod dataframe, group by the variables for region and railtype, and the calculate the mean transit usage from there. This is similar to the kind of pivot table operations once can do in excel.
 
 #Other Usefil Tidbits
 

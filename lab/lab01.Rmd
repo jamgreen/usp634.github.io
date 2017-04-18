@@ -23,7 +23,7 @@ Install Rstudio There are many ways to interface with R from the bare-bones base
 
 ## Getting Started: Understand basic data structure and conventions
 
-Downlad the [californiatod.csv](lab/californiatod.csv) file and save in your personal folder or C: drive. Open up RStudio, click Tools –> Import Dataset –> From Local File and navigate to your folder and click the csv. Make sure the Heading option is marked as “Yes” and press Ok.
+Downlad the [californiatod.csv](californiatod.csv) file and save in your personal folder or C: drive. Open up RStudio, click Tools –> Import Dataset –> From Local File and navigate to your folder and click the csv. Make sure the Heading option is marked as “Yes” and press Ok.
 
 ```{r}
 #install.packages(readr)
