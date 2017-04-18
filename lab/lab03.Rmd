@@ -27,9 +27,7 @@ Packages
 #remember to set your working directory
 #setwd("[file_path")
 
-setwd("/home/jamgreen/usp634.github.io/lab")
-
-eb_pums <- readRDS("eb_pums_2000.rds")
+eb_pums <- readRDS("/home/jamgreen/usp634.github.io/lab/eb_pums_2000.rds")
 
 #Note: you do not need to have the full file path if #you have properly set your wd(), you just need the #filename surrounded by quotation marks
 ```
@@ -54,7 +52,7 @@ This creates a vector of all integers between 1 and 10. Now type "v2" in order t
 
 >    m <- matrix(c(1,2,3,11,12,13), nrow = 2, ncol = 3, byrow = T)
 
-This creates a matrix of the above values. Now type "m" in order to see it. If you wish to learn more about the differences between matrices and data frames please see [here]<http://faculty.nps.edu/sebuttre/home/R/matrices.html#DataFrames>.
+This creates a matrix of the above values. Now type "m" in order to see it. If you wish to learn more about the differences between matrices and data frames please see [here](http://faculty.nps.edu/sebuttre/home/R/matrices.html#DataFrames).
 
 *Constructing Data Frames* Say you have collected some data with a few variables and you want to input it in R. We can use the data.frame() function
 
