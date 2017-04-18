@@ -1,0 +1,22 @@
+sources:
+  - functions.R
+
+packages:
+  - rmarkdown
+
+targets:
+  all:
+    depends:
+      - site
+
+  labs:
+    command: knit_rmds("lab/")
+  
+  index:
+    command: render_site()
+
+  site:
+    depends: 
+      - labs
+      - index
+    

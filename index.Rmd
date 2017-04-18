@@ -21,6 +21,25 @@ panderOptions('keep.trailing.zeros', TRUE)
 
 Course Website: https://usp634.github.io
 
+## Schedule 
+
+The table below shows by date lecture topics, computer labs, and readings, and dates that assignments will be handed out and due. Supplement readings will be posted on course website.
+
+```{r schedule}
+schedule <- read_delim("schedule.csv", delim="|", trim_ws = TRUE)
+lectures <- read_delim("lecture.csv", delim="|", trim_ws = TRUE)
+labs <- read_delim("lab.csv", delim="|", trim_ws = TRUE)
+#hw <- read_delim("hw/hw.csv", delim="|", trim_ws = TRUE)
+schedule <- schedule %>% 
+  left_join(lectures, by="Date") %>% 
+  left_join(labs, by="Date") %>% 
+  #left_join(hw, by="Date") %>% 
+  dplyr::select(Date, Topic, Readings, Lecture, Lab, Deadline)
+pander(schedule, split.cells = 30, split.table = Inf, missing = '', 
+       justify = "left"
+       )
+```
+
 ## Room and Times
 - **Lecture** 
      URBN 220, Tuesdays 4:00 - 6:30pm
@@ -84,16 +103,4 @@ The course requirements include assigned readings, four assignments, attendance 
     You must cite all of your sources in your work. Please review this web site about citations: http://library.pdx.edu/citing_sources.html
     
     Late assignments will be marked down – one-third of a grade per day late. “One-third of a grade” is, for example, from A to A-, B+ to B, etc. (or 3.3 points using the 100 point scale). We generally do not allow students to turn things in late without assessing this penalty, except in unusual circumstances, e.g. medical emergencies. A request for such an extension must be made before the due date. Having too much work in other classes or at work/internship does not count. All students have those challenges.
-
-## Schedule 
-
-The table below shows by date lecture topics, computer labs, and readings, and dates that assignments will be handed out and due. Supplement readings will be posted on course website.
-
-```{r schedule}
-schedule <- read_delim("schedule.csv", delim="|", trim_ws = TRUE)
-schedule <- schedule %>% dplyr::select(Date, Topic, Readings, Lecture, Lab, Deadline)
-pander(schedule, split.cells = 30, split.table = Inf, missing = '', 
-       justify = "left"
-       )
-```
 
