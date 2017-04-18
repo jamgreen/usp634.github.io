@@ -71,7 +71,7 @@ Compare the mean density to the minimum and maximum values for transit usage. Is
 #for this lab I am outputting to an html format for display purposes.
 #For your lab choose type = text for readability
 
-stargazer(californiatod, type = "html")
+stargazer(as.data.frame(californiatod), type = "html")
 
 ```
 
