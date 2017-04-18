@@ -163,9 +163,8 @@ qplot(region, railtype, geom="point") + geom_jitter()
 
 * Cross tabulation of two categorical variables
 ```{r}
-table(railtype, region) # counts
-options(digits=2) # only show 2 decimal places
-prop.table(table(railtype, region), 2) #share
+table(region, railtype) # counts
+prop.table(table(region, railtype), 2) * 100 #percentage
 ```
 
 ## Learn more
