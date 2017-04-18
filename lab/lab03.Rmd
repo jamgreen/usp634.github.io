@@ -11,7 +11,7 @@ output:
 
 I this lab we will be introduced to the beginning of our R workflow. This will include covering the basics of creating and deleting data, variable manipulation, and saving our results in various formats for later use.
 
-*Load .RDs file* .RDS files are files that save individual objectsin one's global environment at the time of saving. We do not need to cover all of the intricacies of differing environments (a treatment of the advantages of RDS files versus slightly more common RDA files can be found [here](http://www.fromthebottomoftheheap.net/2012/04/01/saving-and-loading-r-objects/)), but do know that .RDS files are a data type built for R and you do not need to have any additional packages to load them and the syntax is straightforward. Because they are built for R they also load a lot faster than trying to import some other form of tabular data because R does not have to work out differing column types or other issues.
+*Load .RDs file* .RDS files are files that save individual objectsin one's global environment at the time of saving. We do not need to cover all of the intricacies of differing environments (a treatment of the advantages of RDS files versus slightly more common RDA files can be found [here](http://www.fromthebottomoftheheap.net/2012/04/01/saving-and-loading-r-objects/)), but do know that .RDS files are a data type built for R and you do not need to have any additional packages to load them and the syntax is straightforward. Because they are built for R they also load a lot faster than trying to import some other form of tabular data because R does not have to work out differing column types or other related issues.
 
 Data File
 
