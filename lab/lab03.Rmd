@@ -15,8 +15,8 @@ I this lab we will be introduced to the beginning of our R workflow. This will i
 
 Data File
 
-- [eb_pums_2000.RDS](lab/eb_pums_2000.rds)
-- [Rmarkdown file](lab/lab03.rmd)
+- [eb_pums_2000.RDS](eb_pums_2000.rds)
+- [Rmarkdown file](lab03.rmd)
 
 Packages
 
