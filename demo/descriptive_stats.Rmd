@@ -18,7 +18,7 @@ pacman::p_load("moments", "ggplot2", "knitr", "printr", "plotly", "scales")
 Question: What is the type for each of the variables in the TOD dataset?
 
 ```{r load}
-californiatod <- read.csv("lab/californiatod.csv"); attach(californiatod)
+californiatod <- read.csv("../lab/californiatod.csv"); attach(californiatod)
 head(californiatod)
 ```
 
