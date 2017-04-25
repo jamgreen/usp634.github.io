@@ -17,6 +17,7 @@ pacman::p_load(tidyverse, knitr, readr, pander)
 panderOptions("digits", 2)
 panderOptions('round', 2)
 panderOptions('keep.trailing.zeros', TRUE)
+panderOptions('keep.line.breaks', TRUE)
 ```
 
 Course Website: https://usp634.github.io
