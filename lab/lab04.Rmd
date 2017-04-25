@@ -47,7 +47,7 @@ For our variable "density", which lists the density for each TOD site, you could
 cali$z_density <- (cali$density - mean(cali$density))/sd(cali$density)
 ```
 
-Remember that mean(Dataset\$varname) and sd(Dataset\$varname) give you the mean and standard deviation of a variable (varname).
+Remember that **mean(Dataset\$varname)** and **sd(Dataset\$varname)** give you the mean and standard deviation of a variable (varname).
 
 *Calculate z-scores*
 
@@ -55,11 +55,13 @@ You have enough now to calculate z-scores on your own. Calculate z-scores for *h
 
 *Calculate Proportions*
 
-To get the probability of following a certain (e.g. normal) distribution, we use the distribution function with the prefix *p*. For example, for a normal distribution, we use pnorm(x, mean, sd), which give sus the probability up to the value of x. 
+To get the probability of following a certain (e.g. normal) distribution, we use the distribution function with the prefix *p*. For example, for a normal distribution, we use pnorm(x, mean, sd), which gives us the probability up to the value of x. 
 
 \begin{center}
 \includegraphics{pnorm.png}
 \end{center}
+
+![The Normal Distribution](pnorm.png)
 
 *Calculate the Shaded Area with the pnorm function*
 
