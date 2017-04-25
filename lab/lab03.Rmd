@@ -23,9 +23,14 @@ Packages
 - dplyr
 - Hmisc
 
-```{r, echo=FALSE}
+**Note:** I also loaded the **pander** package. This is for display purposes for the lab
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
 #remember to set your working directory
 #setwd("[file_path")
+
+if(!require(pacman)){install.packages("pacman"); library(pacman)}
+p_load(dplyr, Hmisc, pander)
 
 eb_pums <- readRDS("eb_pums_2000.rds")
 
@@ -149,10 +154,6 @@ We will make what is called a nested conditional statement. This is a long state
 
 ```{r, message=FALSE, warning=FALSE, tidy=FALSE}
 
-#install.packages("dplyr", repos = #'http://cran.us.r-project.org')
-
-library(dplyr)
-
 #we will create a new variable "racehisp" using #dplyr's mutate function
 eb_pums <- eb_pums %>% mutate(
   race=as.character(race), 
@@ -166,11 +167,10 @@ eb_pums <- eb_pums %>% mutate(
                   .default="Other"), 
   racehisp=ifelse(hispan != "Not Hispanic", "Hispanic", racehisp))
 
-require(pacman)
-p_load(pander)
+
 
 #check your work
-table(eb_pums$racehisp, eb_pums$race)
+pander(table(eb_pums$racehisp, eb_pums$race))
 pander(xtabs(~race + hispan, data = eb_pums))
 
 tab_racehisp <- table(eb_pums$racehisp)
@@ -220,9 +220,6 @@ We will now recode the data into our new categories, in this case, quantiles. To
 
 ```{r, message=FALSE, warning=FALSE}
 
-install.packages("Hmisc",repos='http://cran.us.r-project.org' )
-
-library(Hmisc)
 
 #We will create a new variable called "inc5" made up #of 5 quintiles (6 slices of 5 categories) of our #cleaned up household income variable
 
@@ -236,7 +233,7 @@ summary(eb_pums$inc5)
 
 #We will run a new two way table with our two new #variables "racehisp" and "inc5"
 
-xtabs(~inc5 + racehisp, data = eb_pums)
+pander(xtabs(~inc5 + racehisp, data = eb_pums))
 ```
 
 Try comparing the results using these two methods (one using the categorical variable racehisp with an ordinal variable-- our quintile recode of income-- and the other using racehisp with the original interval-ratio version of income-- increc). What do they indicate?
