@@ -18,13 +18,8 @@ Note: we will be using the californiatod dataset we've used the past two labs. I
 
 ```{r, warning=FALSE, message=FALSE}
 
-#set wd and install "pacman" package. 
-#Pacman handles installing and loading packages at once
+#set wd that holds the californiatod.csv 
 
-#setwd("C:/Users/elmue/Desktop/Data1_labs")
-
-#install.packages("pacman", repos='http://cran.us.r-project.org')
-library(pacman)
 
 cali <- read.csv("californiatod.csv", header = TRUE)
 
