@@ -2,7 +2,9 @@
 title: "USP 634 Lab 4"
 author: "Jamaal Green"
 date: "April 19, 2016"
-output: pdf_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ##Completing R Basics and Introduction to Statistical Inference
@@ -19,7 +21,7 @@ Note: we will be using the californiatod dataset we've used the past two labs. I
 #set wd and install "pacman" package. 
 #Pacman handles installing and loading packages at once
 
-setwd("C:/Users/elmue/Desktop/Data1_labs")
+#setwd("C:/Users/elmue/Desktop/Data1_labs")
 
 #install.packages("pacman", repos='http://cran.us.r-project.org')
 library(pacman)
@@ -45,7 +47,7 @@ For our variable "density", which lists the density for each TOD site, you could
 cali$z_density <- (cali$density - mean(cali$density))/sd(cali$density)
 ```
 
-Remember that mean(Dataset$varname) and sd(Dataset$varname) give you the mean and standard deviation of a variable (varname).
+Remember that mean(Dataset\$varname) and sd(Dataset\$varname) give you the mean and standard deviation of a variable (varname).
 
 *Calculate z-scores*
 
@@ -56,7 +58,7 @@ You have enough now to calculate z-scores on your own. Calculate z-scores for *h
 To get the probability of following a certain (e.g. normal) distribution, we use the distribution function with the prefix *p*. For example, for a normal distribution, we use pnorm(x, mean, sd), which give sus the probability up to the value of x. 
 
 \begin{center}
-\includegraphics{C:/Users/elmue/Desktop/Data1_labs/pnorm.png}
+\includegraphics{pnorm.png}
 \end{center}
 
 *Calculate the Shaded Area with the pnorm function*
@@ -113,7 +115,7 @@ sum(rep1, TRUE)/10000
 
 ##III. Confidence Intervals
 
-1. First, compute the 9% **confidence intervals** for density by hand and looking up the z value from the r table, using R as a calculator. 
+1. First, compute the 95% **confidence intervals** for density by hand and looking up the z value from the r table, using R as a calculator. 
 
 ```{r, warning=FALSE, message=FALSE}
 
