@@ -27,7 +27,7 @@ Packages
 #remember to set your working directory
 #setwd("[file_path")
 
-eb_pums <- readRDS("/home/jamgreen/usp634.github.io/lab/eb_pums_2000.rds")
+eb_pums <- readRDS("eb_pums_2000.rds")
 
 #Note: you do not need to have the full file path if #you have properly set your wd(), you just need the #filename surrounded by quotation marks
 ```
@@ -154,23 +154,29 @@ We will make what is called a nested conditional statement. This is a long state
 library(dplyr)
 
 #we will create a new variable "racehisp" using #dplyr's mutate function
-eb_pums <- eb_pums %>% mutate(racehisp = ifelse(hispan != "Not Hispanic", 6, 
-       ifelse(race == "White" , 1, 
-       ifelse(race == "Black", 2, 
-       ifelse(race == "American Indian or Alaskan", 3, 
-       ifelse(race == "Chinese" | race == "Japanese"| race == "Other Asian or Pacific", 4, 
-       5))))))
+eb_pums <- eb_pums %>% mutate(
+  race=as.character(race), 
+  racehisp=recode(race, 
+                  "Chinese"="Asian", 
+                  "Japanese"="Asian", 
+                  "Other Asian or Pacific"="Asian", 
+                  "White"="White", 
+                  "Black"="Black", 
+                  "American Indian or Alaskan"="American Indian or Alaskan", 
+                  .default="Other"), 
+  racehisp=ifelse(hispan != "Not Hispanic", "Hispanic", racehisp))
+
+require(pacman)
+p_load(pander)
 
 #check your work
 table(eb_pums$racehisp, eb_pums$race)
-xtabs(~race + hispan, data = eb_pums)
+pander(xtabs(~race + hispan, data = eb_pums))
 
-#label new 
-eb_pums$racehisp <- factor(eb_pums$racehisp, levels = 1:5,
-labels = c("White non-Hisp", "Black non-Hisp", "Asian non-Hisp", "Hispanic", "Other"))
+tab_racehisp <- table(eb_pums$racehisp)
 
 #check work again
-table(eb_pums$racehisp)
+pander(tab_racehisp)
 ```
 
 **Recoding a continuous variable**
