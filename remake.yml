@@ -11,12 +11,12 @@ targets:
 
   labs:
     command: knit_rmds("lab/")
-  
-  index:
-    command: render_site()
 
+  demo:
+    command: render("demo/descriptive_stats.Rmd")
+  
   site:
-    depends: 
-      - labs
-      - index
-    
+    depends:
+      #- labs
+      - demo
+    command: render_site()

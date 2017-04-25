@@ -18,7 +18,7 @@ pacman::p_load("moments", "ggplot2", "knitr", "printr", "plotly", "scales")
 Question: What is the type for each of the variables in the TOD dataset?
 
 ```{r load}
-californiatod <- read.csv("lab/californiatod.csv"); attach(californiatod)
+californiatod <- read.csv("../lab/californiatod.csv"); attach(californiatod)
 head(californiatod)
 ```
 
@@ -163,8 +163,8 @@ qplot(region, railtype, geom="point") + geom_jitter()
 
 * Cross tabulation of two categorical variables
 ```{r}
-table(region, railtype) # counts
-prop.table(table(region, railtype), 2) * 100 #percentage
+table(railtype, region) # counts
+prop.table(table(railtype, region), 2) * 100 #percentage
 ```
 
 ## Learn more
