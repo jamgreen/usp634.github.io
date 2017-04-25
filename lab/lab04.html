@@ -128,13 +128,8 @@ $(document).ready(function () {
 <h2>Completing R Basics and Introduction to Statistical Inference</h2>
 <p><strong>Leanring Objectives</strong> Compute z-scores Run simulations with R Compute confidence interval, Margin of Error and Sample Size</p>
 <p>Note: we will be using the californiatod dataset we’ve used the past two labs. If you need, re-download it, if you have it saved, just import it directly into R.</p>
-<pre class="r"><code>#set wd and install &quot;pacman&quot; package. 
-#Pacman handles installing and loading packages at once
+<pre class="r"><code>#set wd that holds the californiatod.csv 
 
-#setwd(&quot;C:/Users/elmue/Desktop/Data1_labs&quot;)
-
-#install.packages(&quot;pacman&quot;, repos='http://cran.us.r-project.org')
-library(pacman)
 
 cali &lt;- read.csv(&quot;californiatod.csv&quot;, header = TRUE)</code></pre>
 </div>
@@ -196,7 +191,7 @@ rep1 &lt;- replicate(10000, sample(1:6, 1) == 4 &amp; sample(1:6,1) == 6)
 #number of observations (10000)
 
 sum(rep1, TRUE)/10000</code></pre>
-<pre><code>## [1] 0.0285</code></pre>
+<pre><code>## [1] 0.0289</code></pre>
 </div>
 <div id="iii.-confidence-intervals" class="section level2">
 <h2>III. Confidence Intervals</h2>
