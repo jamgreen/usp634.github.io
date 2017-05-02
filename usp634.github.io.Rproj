@@ -13,4 +13,4 @@ RnwWeave: Sweave
 LaTeX: pdfLaTeX
 
 BuildType: Website
-WebsitePath: ~/usp634.github.io
+WebsitePath: ~/Dropbox/teaching/USP634/2017/usp634.github.io

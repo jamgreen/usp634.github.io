@@ -36,7 +36,9 @@ schedule <- schedule %>%
   left_join(labs, by="Date") %>% 
   #left_join(hw, by="Date") %>% 
   dplyr::select(Date, Topic, Readings, Lecture, Lab, Deadline)
-pander(schedule, split.cells = 30, split.table = Inf, missing = '', 
+pander(schedule, split.cells = c("5%", "30%", "30%", "15%", "10%", "10%"), 
+       split.table = Inf, 
+       missing = '', 
        justify = "left"
        )
 ```
