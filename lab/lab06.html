@@ -194,50 +194,36 @@ comment(pums$mode) = &quot;Mode of transportation to work (recoded from carpool 
 </blockquote>
 <p><em>Limit our crosstabs to workers only</em></p>
 <p>We can use the <strong>subset()</strong> function to isolate particular values of our variables. In this case, we are only interested in workers. (we will save the table object as xtabs.TR)</p>
-<pre class="r"><code>xtabs.TR &lt;- xtabs(~ mode + racehisp, data = pums, 
-subset = !is.na(mode), drop.unused.levels = TRUE)
+<pre class="r"><code>xtabs.TR &lt;- xtabs(~ racehisp + mode, data = pums, 
+                  subset = !is.na(mode), drop.unused.levels = TRUE)
 
 xtabs.TR</code></pre>
-<pre><code>##              racehisp
-## mode          White non-Hisp Black non-Hisp Asian non-Hisp Hispanic Other
-##   Drive alone          20923           3306           6060     5041  1465
-##   Carpool               3010            820           1546     1819   314
-##   Transit               2531            915           1011      811   244
-##   Bike/walk             1035            136            332      391    99
-##   Other                 1865            204            340      274   116</code></pre>
+<pre><code>##                 mode
+## racehisp         Drive alone Carpool Transit Bike/walk Other
+##   White non-Hisp       20923    3010    2531      1035  1865
+##   Black non-Hisp        3306     820     915       136   204
+##   Asian non-Hisp        6060    1546    1011       332   340
+##   Hispanic              5041    1819     811       391   274
+##   Other                 1465     314     244        99   116</code></pre>
 <p><em>Add column percentages</em></p>
 <p>We have a nice proper crosstab but frequency counts are often not what we want. We are often interested in the different <em>proportions</em> of our categorical variables. So, to answer this we will calculate the percentages of worker mode of transit by race/ethnicity.</p>
-<pre class="r"><code>prop.table(xtabs(~ mode + racehisp, data = pums, subset = !is.na(mode), drop.unused.levels = TRUE), 2)</code></pre>
-<pre><code>##              racehisp
-## mode          White non-Hisp Black non-Hisp Asian non-Hisp   Hispanic
-##   Drive alone     0.71253916     0.61438394     0.65238454 0.60472649
-##   Carpool         0.10250647     0.15238803     0.16643342 0.21821017
-##   Transit         0.08619398     0.17004274     0.10883841 0.09728887
-##   Bike/walk       0.03524724     0.02527411     0.03574120 0.04690499
-##   Other           0.06351315     0.03791117     0.03660243 0.03286948
-##              racehisp
-## mode               Other
-##   Drive alone 0.65460232
-##   Carpool     0.14030384
-##   Transit     0.10902592
-##   Bike/walk   0.04423592
-##   Other       0.05183199</code></pre>
+<pre class="r"><code>prop.table(xtabs(~ racehisp + mode, data = pums, subset = !is.na(mode), drop.unused.levels = TRUE), 1)</code></pre>
+<pre><code>##                 mode
+## racehisp         Drive alone    Carpool    Transit  Bike/walk      Other
+##   White non-Hisp  0.71253916 0.10250647 0.08619398 0.03524724 0.06351315
+##   Black non-Hisp  0.61438394 0.15238803 0.17004274 0.02527411 0.03791117
+##   Asian non-Hisp  0.65238454 0.16643342 0.10883841 0.03574120 0.03660243
+##   Hispanic        0.60472649 0.21821017 0.09728887 0.04690499 0.03286948
+##   Other           0.65460232 0.14030384 0.10902592 0.04423592 0.05183199</code></pre>
 <pre class="r"><code>#Or if you saved the xtabs results in our object this also works
-prop.table(xtabs.TR, 2)</code></pre>
-<pre><code>##              racehisp
-## mode          White non-Hisp Black non-Hisp Asian non-Hisp   Hispanic
-##   Drive alone     0.71253916     0.61438394     0.65238454 0.60472649
-##   Carpool         0.10250647     0.15238803     0.16643342 0.21821017
-##   Transit         0.08619398     0.17004274     0.10883841 0.09728887
-##   Bike/walk       0.03524724     0.02527411     0.03574120 0.04690499
-##   Other           0.06351315     0.03791117     0.03660243 0.03286948
-##              racehisp
-## mode               Other
-##   Drive alone 0.65460232
-##   Carpool     0.14030384
-##   Transit     0.10902592
-##   Bike/walk   0.04423592
-##   Other       0.05183199</code></pre>
+prop.table(xtabs.TR, 1)</code></pre>
+<pre><code>##                 mode
+## racehisp         Drive alone    Carpool    Transit  Bike/walk      Other
+##   White non-Hisp  0.71253916 0.10250647 0.08619398 0.03524724 0.06351315
+##   Black non-Hisp  0.61438394 0.15238803 0.17004274 0.02527411 0.03791117
+##   Asian non-Hisp  0.65238454 0.16643342 0.10883841 0.03574120 0.03660243
+##   Hispanic        0.60472649 0.21821017 0.09728887 0.04690499 0.03286948
+##   Other           0.65460232 0.14030384 0.10902592 0.04423592 0.05183199</code></pre>
 <p>A crosstab with column percentages can be quite useful for our analyses. When you present this sort of table in a report be sure to include total “N” or frequency counts for each cell.</p>
 <p><strong>Question:</strong> Now that we have some results, which racial groups are most likely to use a car, truck, or van to get to work?</p>
 </div>
@@ -247,17 +233,23 @@ prop.table(xtabs.TR, 2)</code></pre>
 <pre class="r"><code>#using our xtabs.TR object
 
 summary(xtabs.TR)</code></pre>
-<pre><code>## Call: xtabs(formula = ~mode + racehisp, data = pums, subset = !is.na(mode), 
+<pre><code>## Call: xtabs(formula = ~racehisp + mode, data = pums, subset = !is.na(mode), 
 ##     drop.unused.levels = TRUE)
 ## Number of cases in table: 54608 
 ## Number of factors: 2 
 ## Test for independence of all factors:
 ##  Chisq = 1455.1, df = 16, p-value = 2.318e-300</code></pre>
-<pre class="r"><code>chisq.test(xtabs(~mode + racehisp, data = pums, subset = !is.na(mode), drop.unused.levels = TRUE))</code></pre>
+<pre class="r"><code>chisq.test(xtabs(~racehisp + mode, data = pums, subset = !is.na(mode), drop.unused.levels = TRUE))</code></pre>
 <pre><code>## 
 ##  Pearson's Chi-squared test
 ## 
-## data:  xtabs(~mode + racehisp, data = pums, subset = !is.na(mode), drop.unused.levels = TRUE)
+## data:  xtabs(~racehisp + mode, data = pums, subset = !is.na(mode), drop.unused.levels = TRUE)
+## X-squared = 1455.1, df = 16, p-value &lt; 2.2e-16</code></pre>
+<pre class="r"><code>chisq.test(xtabs.TR)</code></pre>
+<pre><code>## 
+##  Pearson's Chi-squared test
+## 
+## data:  xtabs.TR
 ## X-squared = 1455.1, df = 16, p-value &lt; 2.2e-16</code></pre>
 <p>Are the differences in modes to work between racial and ethnic groups statistically significant?</p>
 <p>Save your script and email to me when finished <a href="mailto:**jamgreen@pdx.edu*">**jamgreen@pdx.edu*</a>*</p>

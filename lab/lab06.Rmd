@@ -17,7 +17,6 @@ Load the eb_pums dataset using the **readRDS()** function.
 
 ```{r, warning=FALSE, message=FALSE}
 
-
 pums <- readRDS("eb_pums_2000.rds")
 
 ```
@@ -110,8 +109,8 @@ We can use the **subset()** function to isolate particular values of our variabl
 
 ```{r, warning=FALSE, message=FALSE}
 
-xtabs.TR <- xtabs(~ mode + racehisp, data = pums, 
-subset = !is.na(mode), drop.unused.levels = TRUE)
+xtabs.TR <- xtabs(~ racehisp + mode, data = pums, 
+                  subset = !is.na(mode), drop.unused.levels = TRUE)
 
 xtabs.TR
 ```
@@ -122,10 +121,10 @@ We have a nice proper crosstab but frequency counts are often not what we want. 
 
 ```{r, message=FALSE, warning=FALSE}
 
-prop.table(xtabs(~ mode + racehisp, data = pums, subset = !is.na(mode), drop.unused.levels = TRUE), 2)
+prop.table(xtabs(~ racehisp + mode, data = pums, subset = !is.na(mode), drop.unused.levels = TRUE), 1)
 
 #Or if you saved the xtabs results in our object this also works
-prop.table(xtabs.TR, 2)
+prop.table(xtabs.TR, 1)
 ```
 
 A crosstab with column percentages can be quite useful for our analyses. When you present this sort of table in a report be sure to include total "N" or frequency counts for each cell.
@@ -141,7 +140,8 @@ We will use the chi-square test in order to determine whether the difference bet
 
 summary(xtabs.TR)
 
-chisq.test(xtabs(~mode + racehisp, data = pums, subset = !is.na(mode), drop.unused.levels = TRUE))
+chisq.test(xtabs(~racehisp + mode, data = pums, subset = !is.na(mode), drop.unused.levels = TRUE))
+chisq.test(xtabs.TR)
 ```
 
 Are the differences in modes to work between racial and ethnic groups statistically significant?
