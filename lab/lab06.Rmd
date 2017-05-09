@@ -2,7 +2,9 @@
 title: 'USP 634 Lab 6: Chi-Square!'
 author: "Jamaal Green"
 date: "May 3, 2016"
-output: word_document
+output:
+  html_document: default
+  word_document: default
 ---
 
 ##Learning Objectives
@@ -15,36 +17,33 @@ Load the eb_pums dataset using the **load()** function.
 
 ```{r, warning=FALSE, message=FALSE}
 
-setwd("C:/Users/elmue/Desktop/Data1_labs_homeworks/Labs")
 
-load("eb_pums_2000.RData")
+pums <- readRDS("eb_pums_2000.rds")
 
 ```
 
-```{r, warning=FALSE, message=FALSE}
 
-pums <- data
-```
+###Recoding Variables
 
-
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
+We will recode some of the values in pums dataset so that we can run our tests later on. 
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
 
 #getting recodes for pums df. racehisp variable and the mode variable
-pums$racehisp = NA  
-pums$racehisp[pums$race =='White']=1 
+pums$racehisp <- NA  
+pums$racehisp[pums$race =='White'] <- 1 
 
-pums$racehisp[as.integer(pums$race) ==2]=2  
+pums$racehisp[as.integer(pums$race) ==2] <- 2  
 
-#Recode Asian.  To recode the 3 Asian categories to ?€?3?€?, enter (the ?€?|?€? sign indicates ?€?or?€?): 
-pums$racehisp[as.integer(pums$race) ==4 | as.integer(pums$race) ==5 | as.integer(pums$race) ==6]=3 
+#Recode Asian.  To recode the 3 Asian categories to ???3???, enter (the ???|??? sign indicates ???or???): 
+pums$racehisp[as.integer(pums$race) ==4 | as.integer(pums$race) ==5 | as.integer(pums$race) ==6] <- 3 
 
-pums$racehisp[as.integer(pums$hispan)!=1] = 4 
+pums$racehisp[as.integer(pums$hispan)!=1] <- 4 
 
 #Note: People of any race can also be Hispanic (Hispanic is not a race category), 
-#so when you recode Hispanics as ?€?4?€?, they will no longer be coded in the ?€?White,?€? ?€?Black,?€? or ?€?Asian?€? categories. 
+#so when you recode Hispanics as ???4???, they will no longer be coded in the ???White,??? ???Black,??? or ???Asian??? categories. 
 
-#Recode Other Race.  Create the residual ?€?Other?€? category: 
-pums$racehisp[is.na(pums$racehisp)] = 5
+#Recode Other Race.  Create the residual ???Other??? category: 
+pums$racehisp[is.na(pums$racehisp)] <- 5
 
 pums$racehisp = factor(pums$racehisp, levels=1:5, 
                        labels=c('White non-Hisp', 'Black non-Hisp', 'Asian non-Hisp', 'Hispanic', 'Other'))
@@ -54,10 +53,10 @@ pums$tranwork <- factor(pums$tranwork,
                         labels=c("N/A (+ not reported 1960)", "Auto, truck, or van", "Auto", "Driver", "Passenger", "Truck", "Van", "Motorcycle", "Bus or streetcar", "Bus or trolley bus", "Streetcar or trolley car", "Subway or elevated", "Railroad", "Taxicab", "Ferryboat", "Bicycle", "Walked only", "Other", "Worked at home"))
 
 # recode modes
-pums$mode = as.integer(pums$carpool)  # this creates a copy of "carpool" with drive-alone & carpool commuters
-pums$mode[as.integer(pums$tranwork) %in% c(10, 11, 12, 13, 14, 15)] = 3  # this creates a "transit" category
-pums$mode[as.integer(pums$tranwork) %in% c(16, 17)] = 4  # this creates "bike/walk"
-pums$mode[as.integer(pums$tranwork) %in% c(8, 18, 19)] = 5 # this creates "other"
+pums$mode <- as.integer(pums$carpool)  # this creates a copy of "carpool" with drive-alone & carpool commuters
+pums$mode[as.integer(pums$tranwork) %in% c(10, 11, 12, 13, 14, 15)] <- 3  # this creates a "transit" category
+pums$mode[as.integer(pums$tranwork) %in% c(16, 17)] <- 4  # this creates "bike/walk"
+pums$mode[as.integer(pums$tranwork) %in% c(8, 18, 19)] <- 5 # this creates "other"
 pums$mode[pums$mode==0] = NA  #this sets NA where the original "carpool" variable to missing
 pums$mode = factor(pums$mode, levels=1:5, labels=c('Drive alone', 'Carpool', 'Transit', 'Bike/walk', 'Other')) 
 comment(pums$mode) = "Mode of transportation to work (recoded from carpool and tranwork)"
@@ -73,7 +72,7 @@ Find the location of the variable you want to rename-- in this case, change the 
 
 ```{r, warning=FALSE, message=FALSE}
 
-names(pums)[6] <- "deailed.meta.area"
+names(pums)[6] <- "detailed.meta.area"
 ```
 
 Check your table to ensure the data have been recoded correctly.
