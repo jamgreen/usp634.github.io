@@ -13,7 +13,7 @@ output:
 3. Run Chi-Square Test
 
 First, either create a new folder for your working directory or use a directory you've already made. Download the eb_pums dataset for the lab.
-Load the eb_pums dataset using the **load()** function.
+Load the eb_pums dataset using the **readRDS()** function.
 
 ```{r, warning=FALSE, message=FALSE}
 
