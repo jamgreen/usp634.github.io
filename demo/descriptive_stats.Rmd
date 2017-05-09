@@ -1,7 +1,7 @@
 ---
-title: "USP 634: Descriptive Stats"
+title: "USP 634: estimator for population standard deviation"
 author: "Liming Wang"
-date: "April 11, 2017"
+date: "May 2nd, 2017"
 output: 
   html_document:
     self_contained: true
@@ -18,10 +18,33 @@ pacman::p_load("moments", "ggplot2", "knitr", "printr", "plotly", "scales")
 Question: What is the type for each of the variables in the TOD dataset?
 
 ```{r load}
-californiatod <- read.csv("../lab/californiatod.csv"); attach(californiatod)
-head(californiatod)
+population <- rnorm(10000, mean=4, sd=2)
+var_p <- 2^2
+sd_p <- 2
 ```
 
+```{r}
+
+sample1 <- sample(population, size=50, replace = TRUE)
+
+n_s <- length(sample1)
+ss <- sum((sample1 - mean(sample1))^2)
+var_s <- ss/n_s
+sd1_s <- sqrt(ss/n_s)
+sd2_s <- sqrt(ss/(n_s - 1))
+
+```
+
+```{r}
+samples <- replicate(1000, sample(population, size=10, replace = FALSE))
+
+n_s <- nrow(samples)
+ss <- colSums((samples - colMeans(samples))^2)
+var_s <- ss/n_s
+sd1_s <- sqrt(ss/n_s)
+sd2_s <- sqrt(ss/(n_s - 1))
+
+```
 
 ## Univariate
 Descriptive Stats for a single variable
