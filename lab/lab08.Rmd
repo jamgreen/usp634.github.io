@@ -1,0 +1,234 @@
+---
+title: 'USP 634 Lab 8: Association and Correlation'
+author: "Jamaal Green"
+date: "May 17, 2016"
+output: html_document
+---
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+
+pums <- readRDS("eb_pums_2000.rds")
+
+# create a subset copy of the original data to work on 
+pums = subset(pums, select=c(year, metaread, puma, ownershp, builtyr, hhincome, perwt, age, sex, race, hispan, tranwork, carpool, trantime))
+
+#Rename a variable: metaread to detailed.meta.area
+names(pums)[2] = 'detailed.meta.area'
+
+# the code book for pums data can be found at https://usa.ipums.org/usa-action/variables/group?id=race_eth
+pums$racehisp = NA  
+pums$racehisp[pums$race =='White']=1 
+
+#Check your work. 
+table(pums$racehisp)
+
+#Check your work ???? first 30 rows of dataset. A faster way to check your data
+pums[1:30,c('race','hispan', 'racehisp')]
+
+#Recode African-American. Enter a value of ???2??? for those cases where race is African-American: 
+pums$racehisp[as.integer(pums$race) ==2]=2  
+
+#Recode Asian.  To recode the 3 Asian categories to ???3???, enter (the ???|??? sign indicates ???or???): 
+pums$racehisp[as.integer(pums$race) ==4 | as.integer(pums$race) ==5 | as.integer(pums$race) ==6]=3 
+#
+#OR, use the following command:
+#pums$racehisp[as.integer(pums$race) %in% c(3,4,5)] = 3
+
+#Recode Hispanic.  Code all Hispanic subcategories as ???4??? (???!=??? means ???does not equal???): 
+pums$racehisp[as.integer(pums$hispan)!=1] = 4 
+
+#Note: People of any race can also be Hispanic (Hispanic is not a race category), 
+#so when you recode Hispanics as ???4???, they will no longer be coded in the ???White,??? ???Black,??? or ???Asian??? categories. 
+
+#Recode Other Race.  Create the residual ???Other??? category: 
+pums$racehisp[is.na(pums$racehisp)] = 5
+
+#Look at Your New Data.
+table(pums$racehisp)
+xtabs(~pums$race+pums$hispan)
+
+#Label your new race categories with text labels.
+#Use the following command to apply text labels to your new race categories: 
+pums$racehisp = factor(pums$racehisp, levels=1:5, 
+                       labels=c('White non-Hisp', 'Black non-Hisp', 'Asian non-Hisp', 'Hispanic', 'Other'))
+
+#Look at your work. 
+table(pums$racehisp)
+
+
+table(pums$tranwork)
+pums$tranwork <- factor(pums$tranwork, 
+                        levels=c(00, 10, 11, 12, 13, 14, 15, 20, 30, 31, 32, 33, 34, 35, 36, 40, 50, 60, 70),
+                        labels=c("N/A (+ not reported 1960)", "Auto, truck, or van", "Auto", "Driver", "Passenger", "Truck", "Van", "Motorcycle", "Bus or streetcar", "Bus or trolley bus", "Streetcar or trolley car", "Subway or elevated", "Railroad", "Taxicab", "Ferryboat", "Bicycle", "Walked only", "Other", "Worked at home"))
+
+# recode modes
+pums$mode = as.integer(pums$carpool)  # this creates a copy of "carpool" with drive-alone & carpool commuters
+pums$mode[as.integer(pums$tranwork) %in% c(10, 11, 12, 13, 14, 15)] = 3  # this creates a "transit" category
+pums$mode[as.integer(pums$tranwork) %in% c(16, 17)] = 4  # this creates "bike/walk"
+pums$mode[as.integer(pums$tranwork) %in% c(8, 18, 19)] = 5 # this creates "other"
+pums$mode[pums$mode==0] = NA  #this sets NA where the original "carpool" variable to missing
+pums$mode = factor(pums$mode, levels=1:5, labels=c('Drive alone', 'Carpool', 'Transit', 'Bike/walk', 'Other')) 
+comment(pums$mode) = "Mode of transportation to work (recoded from carpool and tranwork)"
+
+# recode builtyr variable
+pums$builtyr2 = as.integer(pums$builtyr)  # copy of builtyr
+pums$builtyr2[as.integer(pums$builtyr) %in% c(2, 3)]=1 #recodes first two categories to create 0-10 years
+pums$builtyr2[as.integer(pums$builtyr)==4]=2 #set numeric codes so they are equivalent to # decades
+pums$builtyr2[as.integer(pums$builtyr)==5]=3
+pums$builtyr2[as.integer(pums$builtyr)==6]=4
+pums$builtyr2[as.integer(pums$builtyr)==7]=5
+pums$builtyr2[as.integer(pums$builtyr)==8]=6
+pums$builtyr2[as.integer(pums$builtyr)==9]=7
+pums$builtyr2 = factor(pums$builtyr2, levels=1:7, labels=c("0-10 yrs", "11-20 yrs", "21-30 yrs", "31-40 yrs", "41-50 yrs","51-60 yrs", "61+"))
+comment(pums$builtyr2) = "recode of builtyr, categories equal one decade"
+
+pums$increc = pums$hhincome
+pums$increc[pums$hhincome <=0 | pums$hhincome >= 999999] = NA
+
+pums$tenure = as.integer(pums$ownershp)
+pums$tenure[pums$tenure==1] = NA
+pums$tenure[pums$tenure==2] = "Owned"
+pums$tenure[pums$tenure==3] = "Rented"
+table(pums$tenure)
+
+# keep 2 decimal places in output
+options(digits=2)
+```
+##Learning Objectives
+* Review basics for analyzing data with R
+* Review basics for determining which analytical technique to use with which variable types
+* Learn commands for lambda, Gamma, and Pearson's r measures of association
+
+**Open and prepare data in R**
+
+Load the eb_pums data and recode as we've done before in prior labs (if feeling adventurous try to use the *source()* function to run an independent recode script). 
+
+##Review of Basic Techniques for Analyzing Variables by Type
+
+Some basic procedures for analyzing variables by type
+
+* Find basic info about dataset
+    + use the **summary()** function in order to get a set of basic descriptive statistics 
+    + use the **str()** function to see the underlying structure of your dataset including names of variables, data type etc
+
+* Look at data case by case
+    + we could simply type pums into our console and have R print out the entire dataset but this is ridiculous for larger datasets. So we will pick out particular cases.
+
+* Remember our indexes
+    + We can limit our the number of cases viewed by column
+
+        `pums[, c("age", "sex", "racehisp")]`
+        
+    + We can look at the first and last few rows of our data by using the **head()** and **tail()** functions
+    + We could also look at our data using conditional statements
+
+
+`pums[pums$sex == 2, c("age", "racehisp")]`
+
+
+* Subset a data set (subsetting our racehisp variable)
+
+
+`pums.sub <- subet(pums, as.character(racehisp) %in% c("Hispanic", "Black non-Hisp", "Asian non-Hisp"))`
+
+* We can also subset our data using dplyr's *filter()* function. What would be the syntax for the command above this one?
+
+
+* Analyze categorical (factor) variables
+    - Frequency distributions and bar graphs are two general categorical analysis/visualization approaches
+    - Contingency tables: the **xtabs** or **table** functions are commands used to analyze the relationship between two categorical variables. 
+    - If we want to look at the columns percentages we would use the **prop.table** function
+    - Quick question: what is the appropriate significance test when comparing categorical variables?
+
+* Analyze numeric variables
+    - use **summary** to get basic descriptive stats
+    - histograms are a major tool in looking at the distribution of numeric variables
+    - Association (using the **cov** function) and scatterplots are our primary tools for examining the relationship between two or more numeric variables
+
+* Combine categorical (factor) and numeric variables
+    - when examining categorical and continuous variables we have to group by our categorical variables. We have multiple ways to perform group operations ranging from **tapply** functions to the *doBy* package. We've also covered the *dplyr* **group_by** function: `pums %>% group_by(racehisp) %>% summarize(avginc = mean(increc),medinc = median(increc))`
+
+* Ordinal variables- ordinal variables fall in-between categorical and numeric variables. This particularly matters for how we treat their values in terms of analysis and visualization. 
+    - For example, we have a survey response with a five point Likert scale (1-5). How should we examine this? Since the variable has only 5 values, the **xtabs** command may be appropriate as you can get frequency counts and percentages using the **prop.table** function. But we could also use the summary command if we were interested in say the mean response for a particular answer. 
+        
+##Measures of Association
+
+###Racial/Ethnic identity and mode of work
+
+First, what are the types of variables we're discussing here? What sort of analysis would be appropriate?
+
+1. Examine the data to prepare for the test
+    + Make a table for the race/ethnicity variable *racehisp* and for the mode-to-work variable *mode*
+    + Which variable should be considered the independent variable? That variable should be the **row** variable for our contingency table.
+
+`xtabs(~mode+racehisp, data = pums, drop.unused.levels= T)`
+    + Save xtabs results to a new object
+        
+
+`mode.race <- xtabs(~mode+racehisp, data = pums, drop.unused.levels= T)`
+    + Now find the percentages using **prop.table**
+
+2. Based on these results what is the association between race and mode-to-work?
+3. Now test the significance and strength of the relationship between racehisp and mode-to-work. [for this use a chi-square test]
+
+ `chisq.test(mode.race)`
+
+4.  Is the relationship statisitcally significant?
+5.  How strong is the relationship? Which test statistic tells you?
+
+
+```{r, include=FALSE}
+
+mode.race <- xtabs(~mode+racehisp, data = pums, drop.unused.levels= T)
+```
+
+```{r, message=FALSE, warning=FALSE}
+
+chisq.test(mode.race)
+```       
+4. Calculate **lambda** to gauge the strength of the relationship
+    + Install and load the Visualizing Categorical Data Package, then enter `assocstats(mode.race)`
+```{r, warning=FALSE, message=FALSE}
+install.packages("vcd", repos='http://cran.us.r-project.org' )
+install.packages("vcdExtra", repos = 'http://cran.us.r-project.org' )
+library(vcd)
+library(vcdExtra)
+
+assocstats(mode.race)
+```
+    + What do these results indicate about the strength of the relationship?
+  
+###Age of Housing and Household Income of Residents
+
+Recode household income into 3 categories: 
+```{r, warning=FALSE, message=FALSE}
+pums$hinc4 <- cut(pums$increc, breaks=4, labels=c("1st Quantile",
+"2nd Quantile", "3rd Quantile", "4th Quantile"))
+```
+        
+Next, lets assess the relationship between the ago of housing (by decade) and household income of the residents (by quintiles).
+
+* What types of variables are these-- age of housing (by decade) and household income of residents (by quintiles)? What sort of analysis is appropriate?
+
+* Examine/prepare data for your test. Create a contingency table for housing age and household income and calculate their percentages. Then calculate the gamma.
+
+```{r, warning=FALSE, message=FALSE}
+
+builtyr.hinc <- xtabs(~pums$builtyr2 + pums$hinc4)
+
+GKgamma(builtyr.hinc)
+```
+
+###Household income and commuting time
+
+Now, consider the association between household income and commuting time. What are these two variables? What is an appropriate measure of association?
+
+* Create a scatterplot for household income (increc) and commuting time (trantime)
+* Caluclate the association between the two variables
+
+```{r, message=FALSE, warning=FALSE}
+
+cor(pums[, c("increc", "trantime")], use="complete")
+```
+
+
+

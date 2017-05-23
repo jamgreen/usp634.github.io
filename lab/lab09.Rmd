@@ -1,0 +1,123 @@
+---
+title: "USP 634 Lab 9- Linear Regression"
+author: "Jamaal Green"
+date: "May 24, 2016"
+output: html_document
+---
+
+```{r warning=FALSE, message=FALSE}
+setwd("C:/Users/jamgreen/Desktop/USP634")
+cali <- read.csv("C:/Users/jamgreen/Desktop/USP634/californiatod.csv")
+```
+
+## Learning Objectives
+
+* Learn to do regression analysis in R
+* Interpret regression outputs
+* Regression diagnostics
+* Standardized regression coefficients (beta weights)
+
+##Regression
+
+For this lab we will conduct regression using the californiatod dataset we've used before.
+
+Set your working directory and import the dataset. We will formulate a research questions, perform some exploratory data analysis, and then build our first linear models.
+
+1. Research Questions: For this exercise we shall investigate the factors influencing transit usage in TOD projects. Our dependent (response) variable is the share of transit trips by residents in various TOD projects across CA. Our independent (predictor) variables are: density, housing value, railtype and region. 
+2. Explore and Plot the Data 
+    1. Let's create scatterplots for transit v. density, and transit v. houseval
+
+```{r, warning=FALSE,message=FALSE}
+
+#ggplot approach
+#transit v density
+#install.packages("ggplot2", repos = "http://cran.r-project.org")
+library(ggplot2)
+
+p1 <- ggplot(cali, aes(x = density, y = transit))
+p1 + geom_point() + scale_y_continuous(labels = scales::percent) 
+
+#transit v houseval
+p2 <- ggplot(cali, aes(x = houseval, y = transit))
+p2 + geom_point() + scale_y_continuous(labels = scales::percent) +
+  scale_x_continuous(labels = scales::dollar, limits = c(0, 810000))
+```
+    
+    2. Now, let's create boxplots by groups for transit share and railtype
+
+```{r, warning=FALSE, message=FALSE}
+
+p3 <- ggplot(cali, aes(x = railtype, y = transit))
+p3 + geom_boxplot() + scale_y_continuous(labels = scales::percent)
+```
+
+2. Building out our model
+    1. Because we have a small number of independent variables we can build out 
+    out and test our model specification manually. Since, the literature has shown
+    clear connections between density and travel behavior (transit usage 
+    in our case), let's start with with density.
+
+```{r, message=FALSE, warning=FALSE}
+#We will use the lm() function for our linear modeling
+
+RegMod1 <- lm(transit ~ density, data = cali)
+summary(RegMod1)
+```
+
+What do our results tell us? Now run this again using the houseval variable?
+
+  2. Now let's try our model out using the categorical variables railtype and region
+  
+```{r, message=FALSE, warning=FALSE}
+RegMod2 <- lm(transit ~ railtype, data = cali)
+summary(RegMod2)
+```
+
+Recall that this is a so-called "fixed effects" dummy variable. How should we interpret the coefficient for our categorical dummy variable? Next, include region as an independent variable.
+
+  3. Now try to estimate a parsimonious model with the highest adjusted $R^2$. This is the model specification I got.
+  
+```{r, warning=FALSE, message=FALSE}
+
+finalmod <- lm(transit ~ railtype + houseval + region, data = cali)
+summary(finalmod)
+```
+
+See if you can get an interaction effect between a dummy variable and a continuous variable (or another dummy variable).
+
+   4. Model Diagnostics- use the **plot()** function on your model and look at the
+   diagnostic plots. What do they tell us about our model?
+   
+   5. Finally, conduct a "reasonableness" test against initial theories/postulates and derive the policy implications.
+  
+   6. Estimating regressions can answer many questions for us, such as:
+       1. What is the direction of the relationship between our dependent variable and our independent variables.
+       2. Are the partial slopes statistically significant? Check the t-scores and probability for each coefficient to find out
+       3. You can get a confidence interval for each slope by using:
+         `confint(finalmod)`
+       4. Finally, we can determine how well are independent variables predict the values of our dependent variables. What does our $R^2$ tell us? Is it statistically significant? Check the F statistics and its probability
+       
+##Beautify R Output
+
+Remember *stargazer*? Now here is where it can shine
+
+```{r, warning=FALSE, message=FALSE, results='asis'}
+#install.packages("stargazer", repos = "http://cran.r-project.org")
+library(stargazer)
+stargazer(finalmod, type = "html")
+```
+
+##Beta Weights
+You may wonder about the relative influence of each partial slope. To determine this, you need to convert the output to a standardized regression equation, with standardized partial slopes (aka **beta weights**). To do this we will use the *lm.beta* package.
+
+```{r, message=FALSE, warning=FALSE}
+
+#install.packages("lm.beta", repos = "http://cran.r-project.org")
+library(lm.beta)
+
+summary(lm.beta(finalmod))
+```
+
+Alternatively, if all your variables are numeric, you can first scale the variables and the ren-run the regression.
+
+Assuming a causal relationship, which independent variable exerts the most influence on transit usage?
