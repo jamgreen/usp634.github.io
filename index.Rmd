@@ -43,6 +43,8 @@ pander(schedule, split.cells = c("5%", "30%", "30%", "15%", "10%", "10%"),
        )
 ```
 
+- [Stats Cheat Sheet](http://people.stfx.ca/jmorgen/290/CheatSheets/STATS%20CHEAT%20SHEET%20390.doc)
+
 ## Room and Times
 - **Lecture** 
      URBN 220, Tuesdays 4:00 - 6:30pm
