@@ -6,8 +6,10 @@ output: html_document
 ---
 
 ```{r warning=FALSE, message=FALSE}
-setwd("C:/Users/jamgreen/Desktop/USP634")
-cali <- read.csv("C:/Users/jamgreen/Desktop/USP634/californiatod.csv")
+if(!require(pacman)){install.packages("pacman"); library(pacman)}
+p_load(lm.beta, stargazer, tidyverse)
+
+cali <- read_csv("californiatod.csv")
 ```
 
 ## Learning Objectives
@@ -32,7 +34,7 @@ Set your working directory and import the dataset. We will formulate a research 
 #ggplot approach
 #transit v density
 #install.packages("ggplot2", repos = "http://cran.r-project.org")
-library(ggplot2)
+#library(ggplot2)
 
 p1 <- ggplot(cali, aes(x = density, y = transit))
 p1 + geom_point() + scale_y_continuous(labels = scales::percent) 
@@ -103,7 +105,7 @@ Remember *stargazer*? Now here is where it can shine
 
 ```{r, warning=FALSE, message=FALSE, results='asis'}
 #install.packages("stargazer", repos = "http://cran.r-project.org")
-library(stargazer)
+#library(stargazer)
 stargazer(finalmod, type = "html")
 ```
 
@@ -113,11 +115,11 @@ You may wonder about the relative influence of each partial slope. To determine 
 ```{r, message=FALSE, warning=FALSE}
 
 #install.packages("lm.beta", repos = "http://cran.r-project.org")
-library(lm.beta)
+#library(lm.beta)
 
 summary(lm.beta(finalmod))
 ```
 
-Alternatively, if all your variables are numeric, you can first scale the variables and the ren-run the regression.
+Alternatively, if all your variables are numeric, you can first scale the variables and the re-run the regression.
 
 Assuming a causal relationship, which independent variable exerts the most influence on transit usage?
