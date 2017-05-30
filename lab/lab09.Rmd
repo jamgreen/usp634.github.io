@@ -117,7 +117,9 @@ You may wonder about the relative influence of each partial slope. To determine 
 #install.packages("lm.beta", repos = "http://cran.r-project.org")
 #library(lm.beta)
 
-summary(lm.beta(finalmod))
+summary(lmbetamod <- lm.beta(finalmod))
+stargazer(finalmod, lmbetamod, column.labels=c("base", "standardized beta"), 
+          coef=list(finalmod$coefficients, lmbetamod$standardized.coefficients), type="html")
 ```
 
 Alternatively, if all your variables are numeric, you can first scale the variables and the re-run the regression.
