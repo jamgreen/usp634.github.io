@@ -18,6 +18,7 @@ cali <- read_csv("californiatod.csv")
 * Interpret regression outputs
 * Regression diagnostics
 * Standardized regression coefficients (beta weights)
+* Download (to your current working directory) and source the [recode.R](recode.R) script to recode your california tod dataset
 
 ##Regression
 
@@ -118,6 +119,10 @@ You may wonder about the relative influence of each partial slope. To determine 
 #library(lm.beta)
 
 summary(lmbetamod <- lm.beta(finalmod))
+
+```
+
+```{r, message=FALSE, warning=FALSE, results='asis'}
 stargazer(finalmod, lmbetamod, column.labels=c("base", "standardized beta"), 
           coef=list(finalmod$coefficients, lmbetamod$standardized.coefficients), type="html")
 ```
