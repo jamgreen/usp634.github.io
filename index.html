@@ -1,549 +1,264 @@
-<!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-
+<!doctype html>
+<html lang="en">
 <head>
+	<meta name="generator" content="Hugo 0.27.1" />
+	<meta charset="utf-8" />
+	<link rel="icon" sizes="76x76" href="./img/favicon.png">
+	<link rel="icon" type="image/png" href="./img/favicon.png">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-<meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="pandoc" />
+	<title>USP 634 Spring 2018</title>
 
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 
+	
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://cdn.rawgit.com/gaborcsardi/r-font/master/rlogo.css">
+  <link rel="stylesheet" href="https://cdn.rawgit.com/wesbos/Font-Awesome-Docker-Icon/master/fontcustom/fontcustom.css">
 
-
-<title>USP 634: Data Analysis I Spring 2017 Syllabus</title>
-
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
-<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
-<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
-<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
-<script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
-
-<meta name="description" content="USP 634 Data Analysis I at Portland State Univeristy" />
-
-<script type="text/javascript" src="js/rmarkdown.js"></script>
-
-
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-38176783-3', 'auto');
-  ga('send', 'pageview');
-
-</script>
-
-<style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
-<script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
-}
-</script>
-
-
-
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
-
-<link rel="stylesheet" href="css/rmarkdown.css" type="text/css" />
-
+	
+    <link href="./css/bootstrap.min.css" rel="stylesheet" />
+    <link href="./css/material-kit.css" rel="stylesheet"/>
 </head>
 
-<body>
+  
+<body class="landing-page">
+  	<nav class="navbar navbar-transparent navbar-fixed-top navbar-color-on-scroll">
+	    	<div class="container">
+        	
+        	<div class="navbar-header">
+        		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example">
+            		<span class="sr-only">Toggle navigation</span>
+		            <span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+        		</button>
+        		<a class="navbar-brand" href="./">USP 634 Spring 2018</a>
+        	</div>
 
-<style type = "text/css">
-.main-container {
-  max-width: 940px;
-  margin-left: auto;
-  margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
-}
-img {
-  max-width:100%;
-  height: auto;
-}
-.tabbed-pane {
-  padding-top: 12px;
-}
-button.code-folding-btn:focus {
-  outline: none;
-}
-</style>
-
-
-<style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-</style>
-
-<script>
-// manage active state of menu based on current page
-$(document).ready(function () {
-  // active menu anchor
-  href = window.location.pathname
-  href = href.substr(href.lastIndexOf('/') + 1)
-  if (href === "")
-    href = "index.html";
-  var menuAnchor = $('a[href="' + href + '"]');
-
-  // mark it active
-  menuAnchor.parent().addClass('active');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
-});
-</script>
-
-
-<div class="container-fluid main-container">
-
-<!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
-
-<!-- code folding -->
-
-
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = false;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
-
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-.tocify-subheader {
-  display: inline;
-}
-.tocify-subheader .tocify-item {
-  font-size: 0.95em;
-}
-
-</style>
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
-
-
-
-
-<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="index.html">USP 634: Data Analysis I</a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <li>
-  <a href="index.html">Home</a>
-</li>
-<li>
-  <a href="about.html">About</a>
-</li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
+        	<div class="collapse navbar-collapse" id="navigation-example">
+        		<ul class="nav navbar-nav navbar-right">
+      
         
-      </ul>
-    </div><!--/.nav-collapse -->
-  </div><!--/.container -->
-</div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+        <li class="nav-item">
+          <a href="./" data-target="/">
+            <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+            <span>Home</span>
+          </a>
+        </li>
+        
+      
+        
 
+        <li class="nav-item">
+          <a href="./syllabus" data-target="/syllabus">
+            <i class="material-icons">date_range</i>
+            <span>Syllabus</span>
+          </a>
+        </li>
+        
+      
+        
 
+        <li class="nav-item">
+          <a href="./tools" data-target="/tools">
+            <i class="material-icons">build</i>
+            <span>Tools and Datasets</span>
+          </a>
+        </li>
+        
+      
+        
 
-<h1 class="title toc-ignore">USP 634: Data Analysis I Spring 2017 Syllabus</h1>
+        <li class="nav-item">
+          <a href="./policies" data-target="/policies">
+            <i class="material-icons">gavel</i>
+            <span>Policies</span>
+          </a>
+        </li>
+        
+      
+        		</ul>
+        	</div>
+    	</div>
+    </nav>
+  <div class="wrapper">
+    <div class="header header-filter" style="background-image: url('https://farm2.staticflickr.com/1611/25524034724_33b3db1b14_o_d.jpg');">
+      <div class="container">
+        <div class="row">
+					<div class="col-md-6">
+              <h1 class="title">Data Analysis I</h1>
+              <h4>This course is designed to give students the necessary skills to analyze data for their research projects. Together with USP 654 Data Analysis II in the fall, the sequence will provide a thorough and reasonably comprehensive introduction to understanding, critically evaluating, conducting, and writing about analyses for most studies in social science- related disciplines. This course covers descriptive statistics, probability and distributions, hypothesis testing, association, and simple regression analysis. USP 654 Data Analysis II will cover regression analysis in more depth.</h4>
+              <br />
+					</div>
+        </div>
+      </div>
+    </div>
+		<div class="main main-raised">
+			<div class="container">
+		  	<div class="section text-left section-landing">
+		  	  <div class="row">
+		  	    <div class="col-md-6 col-md-offset-3">  
+	            <h3 id="course-info">Course info</h3>
 
-</div>
-
-
-<p>Course Website: <a href="https://usp634.github.io" class="uri">https://usp634.github.io</a></p>
-<div id="schedule" class="section level2">
-<h2>Schedule</h2>
-<p>The table below shows by date lecture topics, computer labs, and readings, and dates that assignments will be handed out and due. Supplement readings will be posted on course website.</p>
-<table>
-<colgroup>
-<col width="2%" />
-<col width="11%" />
-<col width="26%" />
-<col width="38%" />
-<col width="9%" />
-<col width="11%" />
-</colgroup>
+<table class="table table-condensed table-striped text-left">
 <thead>
-<tr class="header">
-<th align="left">Date</th>
-<th align="left">Topic</th>
-<th align="left">Readings</th>
-<th align="left">Lecture</th>
-<th align="left">Lab</th>
-<th align="left">Deadline</th>
+<tr>
+<th><span></span></th>
+<th><span></span></th>
 </tr>
 </thead>
+
 <tbody>
-<tr class="odd">
-<td align="left">4/04</td>
-<td align="left">Course Overview; Stats and Research Design</td>
-<td align="left"><a href="http://science.sciencemag.org/content/336/6077/12">Why Statistics?</a></td>
-<td align="left"><a href="lecture01.pdf">Lecture 1</a></td>
-<td align="left"><a href="lab/lab01.html">Lab 1</a></td>
-<td align="left"></td>
+<tr>
+<td>When</td>
+<td>Tue 4:00 - 7:30pm</td>
 </tr>
-<tr class="even">
-<td align="left">4/11</td>
-<td align="left">Descriptive Statistics</td>
-<td align="left">1. Diez Ch 1; <br> 2. <a href="http://www.pnas.org/content/110/25/10135.full">Cacioppo, et al, 2013</a></td>
-<td align="left"><a href="lecture02.pdf">Lecture 2</a> <br> <a href="demo/descriptive_stats.html">demo</a></td>
-<td align="left"><a href="lab/lab02.html">Lab 2</a></td>
-<td align="left"><a href="hw/HW1.pdf">HW1</a> assigned</td>
+
+<tr>
+<td>Where</td>
+<td>URBN 225</td>
 </tr>
-<tr class="odd">
-<td align="left">4/18</td>
-<td align="left">Probability and Distributions</td>
-<td align="left">Diez Ch 2-3</td>
-<td align="left"><a href="lecture03.pdf">Lecture 3</a></td>
-<td align="left"><a href="lab/lab03.html">Lab 3</a></td>
-<td align="left">Initial research proposal due</td>
-</tr>
-<tr class="even">
-<td align="left">4/25</td>
-<td align="left">Foundation for Inferential Statistics</td>
-<td align="left">Diez Ch 4</td>
-<td align="left"><a href="lecture04.pdf">Lecture 4</a> <br> <a href="https://stats.stackexchange.com/questions/11707/why-is-sample-standard-deviation-a-biased-estimator-of-sigma">sd estimator 1</a> <br> <a href="https://en.wikipedia.org/wiki/Unbiased_estimation_of_standard_deviation">sd estimator 2</a></td>
-<td align="left"><a href="lab/lab04.html">Lab 4</a></td>
-<td align="left">HW1 due; <a href="hw/HW2.pdf">HW2</a> assigned <br> <a href="hw/views.csv">views.csv</a> <a href="hw/views_excel.xls">view.xls</a></td>
-</tr>
-<tr class="odd">
-<td align="left">5/02</td>
-<td align="left">Hypothesis Testing for Continuous Variable: t-tests</td>
-<td align="left">1. Diez Ch 5.1-4; <br> 2. <a href="http://www.sciencedirect.com/science/article/pii/S0378112703003311">Di Stefano, J., 2004.</a>; <br> 3. <a href="https://d2l.pdx.edu/d2l/le/content/637050/viewContent/2951233/View">Krizek, K., 2007</a></td>
-<td align="left"><a href="lecture05.pdf">Lecture 5</a></td>
-<td align="left"><a href="lab/lab05.html">Lab 5</a></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">5/09</td>
-<td align="left">Hypothesis Testing for Continuous Variable (continued)</td>
-<td align="left"></td>
-<td align="left"><a href="lecture05.pdf">Lecture 5 continued</a></td>
-<td align="left"><a href="lab/lab06.html">Lab 6</a></td>
-<td align="left">HW2 due on 5/12; <a href="hw/HW3.pdf">HW3</a> assigned</td>
-</tr>
-<tr class="odd">
-<td align="left">5/16</td>
-<td align="left">Hypothesis Testing for Categorical Variable: Chi-squared tests</td>
-<td align="left">1. Diez Ch 6; <br> 2. <a href="http://journals.sagepub.com/doi/pdf/10.1177/0021934706296192">Spence, et al, 2007</a></td>
-<td align="left"><a href="lecture07.pdf">Lecture 7</a></td>
-<td align="left"><a href="lab/lab07.html">Lab 7</a></td>
-<td align="left">Paper update due</td>
-</tr>
-<tr class="even">
-<td align="left">5/23</td>
-<td align="left">Hypothesis Testing: ANOVA</td>
-<td align="left">Diez Ch 5.5</td>
-<td align="left"><a href="lecture08.pdf">Lecture 8</a></td>
-<td align="left"><a href="lab/lab08.html">Lab 8</a> <a href="lab/recode.R">Recode.R</a></td>
-<td align="left"><a href="hw/HW4.pdf">HW4</a> assigned <br> <a href="hw/world00.RData">world00.rda</a></td>
-</tr>
-<tr class="odd">
-<td align="left">5/26</td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left">HW3 due</td>
-</tr>
-<tr class="even">
-<td align="left">5/30</td>
-<td align="left">Association and Correlation</td>
-<td align="left">Diez Ch 7.1</td>
-<td align="left"><a href="lecture09.pdf">Lecture 9</a></td>
-<td align="left"><a href="lab/lab09.html">Lab 9</a> <a href="lab/recode.R">Recode.R</a></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">6/06</td>
-<td align="left">Linear Regression</td>
-<td align="left">Diez Ch 7.2-4</td>
-<td align="left"><a href="lecture10.pdf">Lecture 10</a></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">6/09</td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left">HW4 due</td>
-</tr>
-<tr class="odd">
-<td align="left">6/13</td>
-<td align="left"><a href="presentation.html">Project presentation</a> <br> 4-7:30pm</td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">6/16</td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left">Final paper due</td>
+
+<tr>
+<td>Office Hours</td>
+<td><a href="https://calendar.google.com/calendar/selfsched?sstoken=UUlwWnNVMTFpNHBGfGRlZmF1bHR8NDA1NGM4OTVlYTI4NjA0MGFhNjlhNDliMWZlNWY4YmU">Tue 2 - 3:45pm &amp; by appointment</a> at URBN 350D</td>
 </tr>
 </tbody>
 </table>
+
+<h3 id="instructor">Instructor</h3>
+
+<table class="table table-condensed table-striped text-left">
+<thead>
+<tr>
+<th><span></span></th>
+<th><span></span></th>
+<th><span></span></th>
+<th><span></span></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Instructor</td>
+<td><a href="https://lmwang.netlify.com/">Liming Wang</a></td>
+<td><a href="mailto:lmwang@pdx.edu" title="email"><i class="fa fa-envelope"></i></a> &nbsp; <a href="https://github.com/lmwang9527" title="GitHub"><i class="fa fa-github"></i></a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="texts">Texts</h3>
+
+<table class="table table-condensed table-striped text-left">
+<thead>
+<tr>
+<th><span></span></th>
+<th><span></span></th>
+<th><span></span></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><a href="https://www.amazon.com/OpenIntro-Statistics-Third-David-Diez/dp/194345003X">OpenIntro Statistics: 3rd ed.</a></td>
+<td>Diez, D.M., Barr, C.D. and Çetinkaya-Rundel, M.</td>
+<td>CreateSpace Independent Publishing Platform, 2015</td>
+</tr>
+
+<tr>
+<td><a href="http://r4ds.had.co.nz/">R for Data Science</a></td>
+<td>Grolemund, Wickham</td>
+<td>O'Reilly, 1st edition, 2017</td>
+</tr>
+</tbody>
+</table>
+
+<p>Additional readings will be posted to <a href="https://d2l.pdx.edu/d2l/le/content/667907/Home">D2L/Readings</a></p>
+
+<h3 id="software">Software</h3>
+
+<p>This course will use the R statistical software. R is free and available for download at <a href="http://cran.r-project.org">http://cran.r-project.org</a>. We will use RStudio (<a href="https://www.rstudio.com/">https://www.rstudio.com/</a>) as our main interface to R. R and RStudio is installed on the lab computers across the campus. Labs will be offered weekly to assist in using R to complete the assignments and R examples will be used during regular sessions. I can provide additional assistance with the software. <a href="https://www.datacamp.com/groups/usp654-data-analysis-2/">DataCamp</a> is a good resource to learn R along with data analysis skills.</p>
+
+<p>It is possible to use your choice of other stats software, such as SAS, SPSS, or Stata, for this class; I do encourage you to continue using one of these software if you are already using it. It is also a good idea to ask your graduate adviser and/or GRA supervisor which software would be most useful for you, and use it. If you plan to use one of these software, I will provide as much assistance as I can.</p>
+
+<h3 id="hardware">Hardware</h3>
+
+<p>Class meets in CUPA computer lab URBN 225; you are welcome to bring and use your own laptop (Windows, Mac, or Linux). Check out the <a href="./tools">Tools and Datasets</a> section for instructions of installing necessary software on your own computer.</p>
+
+<h3 id="attributions">Attributions</h3>
+
 <ul>
-<li><a href="http://people.stfx.ca/jmorgen/290/CheatSheets/STATS%20CHEAT%20SHEET%20390.doc">Stats Cheat Sheet</a></li>
+<li>This course website is adapted from <a href="http://www2.stat.duke.edu/courses/Fall17/sta112.01/">STA 112FS by Mine Çetinkaya-Rundel at Duke University</a>, which in turn is based on <a href="https://espm-157.carlboettiger.info/">ESPM-157 by Carl Boettinger</a>.</li>
+<li>Background photo <a href="https://www.flickr.com/photos/90642235@N04/19400834865/"><em>Portland at Dusk</em> by Alejandro Rdguez on flickr</a></li>
 </ul>
-</div>
-<div id="room-and-times" class="section level2">
-<h2>Room and Times</h2>
-<ul>
-<li><strong>Lecture</strong> URBN 220, Tuesdays 4:00 - 6:30pm</li>
-<li><strong>Computer Lab</strong>: URBN 225, Tuesdays 6:40 - 7:30pm</li>
-<li><strong>Instructors</strong>:
-<ul>
-<li>Professor Liming Wang (<a href="mailto:lmwang@pdx.edu">lmwang@pdx.edu</a>)</li>
-<li>Office: Urban Center 350D</li>
-<li>Office Hours: Tuesdays 3:00-4:00pm or by appointment</li>
-</ul></li>
-<li><strong>Lab Instructor/Teaching Assistant</strong>:
-<ul>
-<li>Jamaal Green (<a href="mailto:jamgreen@pdx.edu">jamgreen@pdx.edu</a>); by appointment.</li>
-</ul></li>
-</ul>
-</div>
-<div id="synopsis" class="section level2">
-<h2>Synopsis</h2>
-<p>This course is designed to give students the necessary skills to analyze data for their research projects. Together with the second course, USP 654 Data Analysis II in the fall, the sequence will provide a thorough and reasonably comprehensive introduction to understanding, critically evaluating, conducting, and writing about analyses for most studies in social science-related disciplines. This course covers descriptive statistics, probability and distributions, hypothesis testing, association, and simple regression analysis. USP 654 Data Analysis II will cover regression analysis in more depth. Prerequisite: College-level algebra, introductory probability and statistics and an understanding of research designs. The most critical elements of these materials will be reviewed in class. I can provide optional readings that will help provide additional review if you need it.</p>
-</div>
-<div id="format" class="section level2">
-<h2>Format</h2>
-<p>Classes will be a combination of lectures, discussion and computer labs. Students are expected to read assigned readings before class and to participate in class discussions. Homework assignments will be given and analysis of these assignments will be the basis for some class discussion during the class following their due date, so it is essential to complete assignments on time.</p>
-</div>
-<div id="software" class="section level2">
-<h2>Software</h2>
-<p>The assignments for this course will use the R statistical software (or your choice of other stats software, such as SAS, SPSS, or Stata). The lab instructions will use R. The software is installed on the lab computers across the campus. R is free and available for download at <a href="http://cran.r-project.org" class="uri">http://cran.r-project.org</a>. We will use a RStudio (<a href="https://www.rstudio.com/" class="uri">https://www.rstudio.com/</a>) as our main interface to R. Labs will be offered weekly to assist in using R to complete the assignments and R examples will be used during regular sessions. Jamaal and I can provide additional assistance to with the software. If you plan to use other software, we will provide as much assistance as we can.</p>
-</div>
-<div id="textbook-and-readings" class="section level2">
-<h2>Textbook and Readings</h2>
-<p>The recommended textbook for the course is</p>
-<ul>
-<li><a href="https://www.openintro.org/stat/textbook.php">Diez, D.M., Barr, C.D. and Çetinkaya-Rundel, M., 2015. OpenIntro Statistics: 3rd ed. CreateSpace Independent Publishing Platform, Lexington, KY.</a></li>
-</ul>
-<p>Optional textbooks are:</p>
-<ol style="list-style-type: decimal">
-<li><a href="https://www.amazon.com/Statistics-Plain-English-Third-Timothy/dp/041587291X">Urdan, T.C., 2010. Statistics in Plain English, 3rd ed. Routledge, New York.</a></li>
-<li><a href="https://www.amazon.com/Research-Design-Statistical-Analysis-Third/dp/0805864318">Myers, J.L., Well, A.D., and Lorch, R.F.,Jr., 2010. Research Design and Statistical Analysis: 3rd Edition. Mahwah, NJ: Erlbaum.</a></li>
-<li><a href="https://www.amazon.com/Cartoon-Guide-Statistics-Larry-Gonick/dp/0062731025">Gonick, L. and Smith, W., 1993. The Cartoon Guide to Statistics, 1st Edition. Collins Reference.</a></li>
-</ol>
-<p>There will also be supplemental readings that will be available for download from the course website.</p>
-</div>
-<div id="grading" class="section level2">
-<h2>Grading</h2>
-<p>The course requirements include assigned readings, four assignments, attendance and class participation, and a research paper.</p>
-<ul>
-<li><p><strong>Assignments (60%)</strong>: Four homework assignments that involve completing analytical exercises designed to build skills in statistical analysis and to reinforce concepts discussed in the class lectures. Clarity in writing and presentation will be taken into account in grading. Students may collaborate on the approach to and analysis of homework assignments but are expected to prepare and present results and interpretations independently.</p></li>
-<li><p><strong>General Attendance and Class Participation (10%)</strong>: The class participation section of the grade does not merely measure attendance in class, but also reflects the student’s understanding of the subject matter, as reflected through insightful questions and discussion in class. There will be occasional in-class quizzes.</p></li>
-<li><strong>Research Project (30%)</strong>: In this class project, you will explore a topic of your choosing in depth, applying statistical methods covered in this class (and beyond) for your data analysis. Ideally, you would build upon work you have already done for other courses, such as USP 630 Research Design, USP 532 Data Collection. The paper must include original data analysis. This most likely will be analysis of secondary data. If you want to collect your own quantitative data, it may be possible, but will take more planning and work. Check with me first. Details:
-<ul>
-<li>20-25 pages, double-spaced, not including figures, tables and references;</li>
-<li>Initial proposal due on April 18th. It should include a brief description of the topic, a list of key references (including academic literature), specific research question(s) and hypotheses, and the data source(s) you plan to use;</li>
-<li>Project updates due on May 16th. This should include a draft of the introduction/background sections, a brief literature review, the methodology and description and descriptive statistics of your data;</li>
-<li>Project presentation on June 6th and 13th (tentative);</li>
-<li>Final paper due Thursday June 15th.</li>
-</ul>
-<p>The best papers (high A grade) will be worthy of submission to an academic journal. Use empirical journal articles as a model to follow in terms of format, style, etc.</p>
-<p>You must cite all of your sources in your work. Please review this web site about citations: <a href="http://library.pdx.edu/citing_sources.html" class="uri">http://library.pdx.edu/citing_sources.html</a></p>
-<p>Late assignments will be marked down – one-third of a grade per day late. “One-third of a grade” is, for example, from A to A-, B+ to B, etc. (or 3.3 points using the 100 point scale). We generally do not allow students to turn things in late without assessing this penalty, except in unusual circumstances, e.g. medical emergencies. A request for such an extension must be made before the due date. Having too much work in other classes or at work/internship does not count. All students have those challenges.</p></li>
-</ul>
-</div>
 
+	          </div>
+          </div>   
+	      </div>
+      </div>
+		</div>
+    <footer class="footer">
+  <div class="container">
+	  <nav class="pull-left">
+	    <ul>
+	    
+        
 
+        <li>
+          <a href="http://d2l.pdx.edu/"><i class="button-icon fa fa-2x fa-map-marker"></i> D2L@pdx</a>
+        </li>
+        
+      
+        
 
-</div>
-</div>
+        <li>
+          <a href="https://www.datacamp.com/groups/usp634"><i class="button-icon fa fa-2x fa-pencil"></i> DataCamp</a>
+        </li>
+        
+      
+        
 
-</div>
+        <li>
+          <a href="https://usp634-f17.slack.com/messages"><i class="button-icon fa fa-2x fa-slack"></i> Slack</a>
+        </li>
+        
+      
+        
 
-<script>
-
-// add bootstrap table styles to pandoc tables
-function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
-}
-$(document).ready(function () {
-  bootstrapStylePandocTables();
-});
-
-
-</script>
-
-
+        <li>
+          <a href="https://github.com/usp634/"><i class="button-icon fa fa-2x fa-github"></i> GitHub</a>
+        </li>
+        
+      
+      </ul>
+    </nav>
+	  <div class="copyright pull-right">
+	    <img src="./img/cc-by.svg"/>
+	  </div>
+  </div>
+</footer>
+	</div>
 </body>
+
+			
+
+	
+	<script src="./js/jquery.min.js" type="text/javascript"></script>
+	<script src="./js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="./js/material.min.js"></script>
+
+	
+	<script src="./js/nouislider.min.js" type="text/javascript"></script>
+
+	
+	<script src="./js/bootstrap-datepicker.js" type="text/javascript"></script>
+
+	
+	<script src="./js/material-kit.js" type="text/javascript"></script>
+
 </html>
