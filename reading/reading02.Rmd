@@ -1,0 +1,18 @@
+---
+title: "Week 2 Readings"
+output: 
+  html_document: 
+    theme: yeti
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Required:
+- Textbook
+    - [Diez, Ch 1](https://www.openintro.org/stat/textbook.php?stat_book=os)
+    - [Wickham, Ch 7](http://r4ds.had.co.nz/exploratory-data-analysis.html)
+- Papers:
+    - [Barton, Bruce A. et al., 2005, The Relationship of Breakfast and Cereal Consumption to Nutrient Intake and Body Mass Index: The National Heart, Lung, and Blood Institute Growth and Health Study, Journal of the American Dietetic Association , Volume 105 , Issue 9 , 1383 - 1389](http://jandonline.org/article/S0002-8223(05)01028-X/abstract)
+
