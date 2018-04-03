@@ -1,5 +1,5 @@
 ---
-title: "Week 10 Readings"
+title: "Week 1 Readings"
 output: 
   html_document: 
     theme: yeti
@@ -11,5 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Required:
 
-- Textbook:
-    - Gordon Chapter 12
+- Papers:
+    - [Why Statistics?](http://science.sciencemag.org/content/336/6077/12.full)
+    - [Barton, Bruce A. et al., 2005, The Relationship of Breakfast and Cereal Consumption to Nutrient Intake and Body Mass Index: The National Heart, Lung, and Blood Institute Growth and Health Study, Journal of the American Dietetic Association , Volume 105 , Issue 9 , 1383 - 1389](http://jandonline.org/article/S0002-8223(05)01028-X/abstract)
+
