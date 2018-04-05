@@ -196,9 +196,9 @@ californiatod &lt;- read_csv(&quot;californiatod.csv&quot;)</code></pre>
 <h2>Enhance R capability with R packages</h2>
 <p>As you can see the output from <code>summary</code> is not very helpful for summary statistics. A package called <code>skimr</code> enhances R’s capability of producting summary statistics:</p>
 <pre class="r"><code># First install the skimr package
-install.packages(&quot;skimr&quot;, repo=&quot;http://cran.rstudio.com&quot;)</code></pre>
-<pre><code>## Installing package into '/home/lmwang/R/x86_64-pc-linux-gnu-library/3.4'
-## (as 'lib' is unspecified)</code></pre>
+if (!require(skimr))
+  install.packages(&quot;skimr&quot;, type=&quot;binary&quot;)</code></pre>
+<pre><code>## Loading required package: skimr</code></pre>
 <pre class="r"><code># load the skimr package (telling R we're going to use it)
 library(skimr)
 # use it to create summary stats for the californiatod data set

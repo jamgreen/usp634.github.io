@@ -44,7 +44,8 @@ As you can see the output from `summary` is not very helpful for summary statist
 
 ```{r}
 # First install the skimr package
-install.packages("skimr", repo="http://cran.rstudio.com")
+if (!require(skimr))
+  install.packages("skimr", type="binary")
 # load the skimr package (telling R we're going to use it)
 library(skimr)
 # use it to create summary stats for the californiatod data set
