@@ -12,7 +12,7 @@ output:
 This tutorial requires the following R packages; install and load them if you have not yet:
 ```{r packages}
 if (!require("pacman")) {install.packages("pacman"); library(pacman)}
-pacman::p_load("moments", "ggplot2", "knitr", "printr", "plotly", "scales", "readr")
+pacman::p_load("moments", "tidyverse", "knitr", "plotly", "scales")
 ```
 
 # Type of Variables
@@ -46,7 +46,7 @@ IQR(californiatod$density)
 
 # Or use package like skimr
 library(skimr)
-skim(californiatod)
+skim(californiatod) %>% print()
 
 # skewness & kurtosis (from the moments package)
 skewness(californiatod$density)
