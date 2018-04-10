@@ -1,0 +1,197 @@
+---
+title: "Lab2: Descriptive Statistics"
+author: "Liming Wang and Jamaal Green"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    self_contained: true
+    number_sections: true
+---
+
+This tutorial requires the following R packages; install and load them if you have not yet:
+```{r packages}
+if (!require("pacman")) {install.packages("pacman"); library(pacman)}
+pacman::p_load("moments", "ggplot2", "knitr", "printr", "plotly", "scales", "readr")
+```
+
+# Type of Variables
+Question: What is the type for each of the variables in the TOD dataset?
+
+```{r load}
+californiatod <- read_csv("californiatod.csv")
+kable(californiatod)
+```
+
+# Univariate
+Descriptive Stats for a single variable
+
+## Numeric variable
+
+### Quantitative measures
+
+Common quantitative descriptive measures include mean, standard deviation (variance), median, IQR
+Skewness and Kurtosis are measures comparing the distribution of the variable of interest to a normal distribution.
+
+```{r}
+mean(californiatod$density)
+sd(californiatod$density)
+
+#range
+max(californiatod$density) - min(californiatod$density)
+
+# robust measures
+median(californiatod$density)
+IQR(californiatod$density)
+
+# Or use package like skimr
+library(skimr)
+skim(californiatod)
+
+# skewness & kurtosis (from the moments package)
+skewness(californiatod$density)
+kurtosis(californiatod$density)
+```
+
+### Visualization
+
+* Histogram
+  
+Histogram is a graphical representation of the distribution of Numeric variables. 
+```{r}
+require(ggplot2)
+qplot(density, data=californiatod, geom="histogram")
+# The default bin width is set to range/30 in qplot and it doesn't look good. Let's set it to 2
+# You can experiment it with different values
+qplot(density, data=californiatod, geom="histogram", binwidth=2)
+
+# show percentage
+hist.percent <- ggplot(californiatod, aes(x=density)) +  
+        geom_histogram(aes(y=(..count..)/sum(..count..)), binwidth = 2) + 
+        scale_y_continuous(labels=percent) + labs(y="")
+hist.percent
+# with normal curve superimposed
+hist.percent + stat_function(fun=dnorm, args=list(mean=mean(californiatod$density), sd=sd(californiatod$density)))
+```
+
+* Box plot
+
+```{r}
+qplot('all', y=density, data=californiatod, geom="boxplot")
+```
+
+## Categorical variable
+
+### Quantitative measures
+```{r}
+table(californiatod$region) # counts
+options(digits=2) # only show 2 decimal places
+prop.table(table(californiatod$region)) #share
+```
+
+### Visualization
+* Bar plot
+```{r}
+qplot(region, data=californiatod, geom="bar") # counts
+
+# in percentage scale
+ggplot(californiatod, aes(x=region)) +  
+        geom_bar(aes(y=(..count..)/sum(..count..))) + 
+        scale_y_continuous(labels=percent) + labs(y="")
+```
+
+# Two variables
+
+Quantitative measures for the relationship between a pair of variables will be covered later. We will focus on visualization here.
+
+## Numeric Variable (explanatory) --> Numeric Variable (response)
+
+* Scatter plot
+```{r}
+qplot(x=density, y=houseval, data=californiatod, geom="point") 
+qplot(x=transit, y=houseval, data=californiatod, geom="point") 
+```
+
+* Scatter plot with a trend line
+```{r}
+qplot(density, houseval, data=californiatod, geom="point") + geom_smooth(method=lm, se=FALSE)
+qplot(transit, houseval, data=californiatod, geom="point") + geom_smooth(method=lm, se=FALSE)
+```
+
+* Scatter plot with interactive information
+```{r}
+plot.int <- ggplot(californiatod, aes(transit, houseval, text=paste("name:", name))) + geom_point()
+ggplotly(plot.int)
+
+```
+
+## Categorical Variable --> Numeric Variable
+
+* Box plot
+```{r}
+qplot(railtype, houseval, data=californiatod, geom="boxplot") 
+qplot(region, houseval, data=californiatod, geom="boxplot") 
+
+# Bar plot, but with less information (only mean)
+ggplot(californiatod, aes(railtype, houseval)) + geom_bar(stat = "identity")
+ggplot(californiatod, aes(region, houseval)) + geom_bar(stat="identity")
+
+# We can try scatter plot even though not ideal
+qplot(railtype, houseval, data=californiatod, geom="point") 
+qplot(region, houseval, data=californiatod, geom="point") 
+```
+
+## Numeric Variable --> Categorical Variable
+
+* Scatter plot, no easy solution
+```{r}
+qplot(transit, railtype, data=californiatod, geom="point")
+qplot(density, railtype, data=californiatod, geom="point")
+```
+
+## Categorical Variable --> Categorical Variable
+
+* Bar plot
+```{r}
+qplot(region, fill=railtype, data=californiatod, geom="bar")
+
+# show percentage
+ggplot(californiatod, aes(x=region, fill=railtype)) +  
+        geom_bar(aes(y=(..count..)/sum(..count..))) + 
+        scale_y_continuous(labels=percent) + labs(y="")
+
+# compare with scatter plots, not ideal for working with categorical variables, even when the data points are jittered
+qplot(region, railtype, data=californiatod, geom="point")
+qplot(region, railtype, data=californiatod, geom="point") + geom_jitter()
+```
+
+* Cross tabulation of two categorical variables
+```{r}
+table(californiatod$railtype, californiatod$region) # counts
+prop.table(table(californiatod$railtype, californiatod$region), 2) * 100 #percentage
+```
+
+Now we will do something a bit more complicated. We will create a new two-way crosstab like you did above but now let's include the mean of a continuous third variable. This sounds complex, but we shall approach it in a straightforward way using the *dplyr* package. 
+
+```{r, message=FALSE, warning=FALSE, echo=TRUE}
+
+#the dplyr way
+#we will first calculate our cross tabs and then the mean of transit usage
+
+californiatod %>% 
+  group_by(region, railtype) %>%
+  summarise(n = n(), 
+            AvgTransit = mean(transit))
+
+californiatod %>% 
+  group_by(region, railtype) %>%
+  skim()
+```
+
+The *dplyr* package is designed to perform table operations on dataframes for multiple kinds of data manipulation. The preceding syntax told R to take our californiatod dataframe, group by the variables for region and railtype, and the calculate the mean transit usage from there. This is similar to the kind of pivot table operations once can do in excel.
+
+# Learn more
+
+- [R Graphs Cookbook (ggplot2)](http://www.cookbook-r.com/Graphs/)
+- [Data Visualization with ggplot2](https://www.datacamp.com/courses/data-visualization-with-ggplot2-1)
+- [ggplot cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
