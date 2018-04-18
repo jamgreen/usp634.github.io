@@ -33,7 +33,7 @@ $$z = \frac{x - \bar{x}}{s}$$
 
 For our variable "density", which lists the density for each TOD site, you could create a new variable in R called "z_density" which would contain the z-score for the density variable. We would use this formula:
 
-```{r, warning=FALSE, echo=FALSE}
+```{r}
 
 californiatod$z_density <- (californiatod$density - mean(californiatod$density))/sd(californiatod$density)
 

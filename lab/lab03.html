@@ -169,6 +169,9 @@ library(dplyr)</code></pre>
 <p>This is the z-score formula we just described above:</p>
 <p><span class="math display">\[z = \frac{x - \bar{x}}{s}\]</span></p>
 <p>For our variable “density”, which lists the density for each TOD site, you could create a new variable in R called “z_density” which would contain the z-score for the density variable. We would use this formula:</p>
+<pre class="r"><code>californiatod$z_density &lt;- (californiatod$density - mean(californiatod$density))/sd(californiatod$density)
+
+californiatod %&gt;% print()</code></pre>
 <pre><code>## # A tibble: 26 x 7
 ##    name            region  transit density houseval railtype     z_density
 ##    &lt;chr&gt;           &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;
