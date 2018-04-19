@@ -317,7 +317,7 @@ eb_pums$increc <- eb_pums$inctot
 eb_pums <- eb_pums %>% mutate(increc=ifelse(inctot < 0 | inctot >= 999999, NA, inctot))
 
 #OR base R equivalent
-eb_pums$increc[eb_pums$inctot <= 0 | eb_pums$inctot >= 999999] <- NA
+eb_pums$increc[eb_pums$inctot < 0 | eb_pums$inctot >= 999999] <- NA
 
 ```
 
@@ -327,15 +327,11 @@ We will now recode the data into our new categories, in this case, quantiles. To
 
 
 #We will create a new variable called "inc5" made up #of 5 quantiles of our #cleaned up household income variable
-
+quantile_brackets <- quantile(eb_pums$increc, probs = seq(0, 1, 0.2), na.rm=T)
 eb_pums <- eb_pums %>% 
-  mutate(inc5=cut(increc, breaks=quantile(increc, 
-                                          probs = seq(0, 1, 0.2), 
-                                          na.rm=T))
-         )
+  mutate(inc5=cut(increc, breaks=quantile_brackets))
 
 #check that it worked
-
 summary(eb_pums$inctot)
 
 summary(eb_pums$inc5)
