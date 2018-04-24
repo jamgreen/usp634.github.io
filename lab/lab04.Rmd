@@ -1,0 +1,112 @@
+---
+title: "USP 634 Lab 3- Some R Basics"
+author: "Jamaal Green and Liming Wang"
+output: 
+  html_document:
+    toc: true
+    self_contained: true
+    number_sections: true
+---
+
+
+# Run Simulations with R
+
+Simulate random draws from a population:
+
+> sample(population, size (the number of items to choose), replace = FALSE)
+
+Repeat the simulation with:
+
+> replicate(M, function)
+
+## Roll dices
+
+We can combine **sample()** and **replicate()** to simulate the rolling of dice. 
+
+```{r, warning=FALSE, message=FALSE, eval=FALSE}
+#Simulate rolling a dice: 
+sample(1:6, 1)
+
+#Check whether a single roll gets a 4
+sample(1:6, 1) == 4
+
+#Roll two die and check if we get a 4 and 6
+
+sample(1:6, 1) == 4 & sample(1:6, 1) == 4
+```
+
+```{r, warning=FALSE, message=FALSE}
+#Now we will repeatedly roll two dices for 10000 times, check wether we get 4 and 6,
+#save it into an object called rep10k
+
+rep10k <- replicate(10000, sample(1:6, 1) == 4 & sample(1:6, 1) == 6)
+
+#Calculate probability by summing up our
+#TRUE responses and then dividing by the 
+#number of observations (10000)
+
+sum(rep10k, TRUE)/10000
+```
+
+## Verify Central Limit Theorem with Simulations
+
+```{r}
+library(dplyr)
+library(ggplot2)
+## Assume a uniform distribution of 100 numbers from 1 to 100 
+population <- 1:100
+
+## randomly sample 10 with replacement and calculate their sample mean
+sample(population, 10, replace=TRUE) %>% mean
+
+## repeatedly do a sample of 10 for 1000 times
+clt_rep1k <- replicate(1000, sample(population, 10, replace=TRUE) %>% mean)
+
+## Let's plot the sample means for the 1000 samples
+qplot(clt_rep1k)
+
+## Verify by plotting the normal curve of the sampling distribution on top of the histogram
+ggplot(data.frame(x=clt_rep1k), aes(x)) + 
+  geom_histogram(aes(y=..density..)) + 
+  stat_function(fun=dnorm, args=list(mean=50, sd=sd(1:100)/sqrt(10)))
+```
+
+# Confidence Intervals
+
+
+Data File
+    - [californiatod.csv](californiatod.csv)
+
+    
+```{r}
+#install.packages(readr)
+library(readr)
+library(dplyr)
+californiatod <- read_csv("californiatod.csv")
+```    
+
+## Manual Calculations
+
+First, compute the 95% **confidence intervals** for density by hand and looking up the z value from the `t` table, using R as a calculator. 
+
+```{r, warning=FALSE, message=FALSE}
+
+xbar <- mean(californiatod$density)
+s <- sd(californiatod$density)
+n <- nrow(californiatod)
+alpha <- 1 - 0.95
+tstar <- qt(1 - alpha/2, df = n-1)
+SE <- s/sqrt(n)
+MOE <- tstar*SE
+xbar + c(-1,1) * MOE
+```
+
+## CI from t.test
+
+You can get the confidence interval when you run a single sample t-test in R (to be covered next week) using the command 
+
+```
+t.test(californiatod$density, alternative='two.sided', mu=0, conf.level=.95)
+```
+
+Verify whether your results are the same using these 2 difference methods.
