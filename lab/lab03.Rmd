@@ -65,6 +65,23 @@ pnorm(-2) + (1 - pnorm(-1))
 pnorm(50, mean=100, sd=25) + (1 - pnorm(75, mean=100, sd=25))
 ```
 
+## Find cutoff given probability (shaded area) with the `qnorm` function
+
+To get the cutoff corresponding to a probability following a certain (e.g. normal) distribution, we use the distribution function with the prefix *q* (for quantile function). For example, for a normal distribution, we use `qnorm(p, mean, sd)`, which gives us the cutoff for probability p. 
+
+```{r}
+## what is the cutoff for p=0.03 in a standard normal distribution (mean=0, sd=1)
+qnorm(0.03)
+
+## what is the cutoff for p=0.03 in a normal distribution with mean=100, sd=25
+qnorm(0.03, mean=100, sd=25)
+
+## what is the cutoff to the right for p=0.97 in a standard normal distribution
+1 - qnorm(0.97)
+# OR
+qnorm(0.03, lower.tail=FALSE)
+```
+
 # Data Wrangling with R
 
 In this lab we will be introduced to the beginning of our R workflow. This will include covering the basics of importing data, variable manipulation, and saving our results in various formats for later use.
