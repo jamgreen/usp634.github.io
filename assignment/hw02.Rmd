@@ -1,0 +1,10 @@
+---
+title: "HW2"
+output: html_document
+---
+
+- Deadline: Sunday, 5/13/2018
+- Instructions: [hw02.pdf](hw02.pdf)
+- Data files (Question 4):
+    - [views.csv](views.csv)
+    - [views_excel.xls](views_excel.xls)

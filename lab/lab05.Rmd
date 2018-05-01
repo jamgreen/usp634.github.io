@@ -1,0 +1,233 @@
+---
+title: "USP 634 Lab 5- Hypothesis Testing"
+author: "Jamaal Green and Liming Wang"
+output:
+  html_document:
+    toc: true
+    self_contained: true
+    number_sections: true
+---
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+library(tidyverse)
+
+#set your working directory 
+californiatod <- read_csv("californiatod.csv")
+```
+
+# QQ Plot
+
+Recall that superimposed a normal curve on top of a histogram to get a rough idea of whether a variable is normally distributed.
+
+First, we will create a histogram for density and superimpose a curve on top of it.
+
+```{r, message=FALSE, warning=FALSE, fig.height=3}
+library(scales)
+# show percentage
+hist.percent <- ggplot(californiatod, aes(x=density)) + 
+        geom_histogram(aes(y=(..count..)/sum(..count..))) + 
+        scale_y_continuous(labels=percent) + labs(y="")
+hist.percent
+# with normal curve superimposed
+hist.percent + stat_function(fun=dnorm, args=list(mean=mean(californiatod$density), 
+                                                  sd=sd(californiatod$density)))
+```
+
+
+There are better ways to do this. One way to determine if a variable is normally distributed is to use a QQ plot. You can use the **geom_qq** function to create a Quantile-Quantile plot evaluating the fit of a sample data to a normal distribution. More generally, the **geom_qq(distribution=q<distribution>)** function creates a Quantile-Quantile plot for any theoretical distribution, **geom_qq_line()** draws a diagonal line for the fit of a theoretical distribution.
+
+Let's create a qqplot for the density and house value variables:
+
+```{r, message=FALSE, warning=FALSE, fig.height=4}
+ggplot(californiatod, aes(sample=density)) +  
+  geom_qq() + geom_qq_line() + ylab("Density")  
+
+ggplot(californiatod, aes(sample=houseval)) +  
+  geom_qq() + geom_qq_line() + ylab("houseval")
+
+```
+
+Which of these two variables are more likely to be normally distributed?
+
+# A quick tutorial for visualization with ggplot2
+
+`ggplot2` is a grammar of graphics, a coherent system for describing and building graphs.
+
+- **data (data frame): ggplot(dataset)**
+- **aesthetic mapping (coordination system, color, size, line type, position etc): aes()**
+- **geometries: geom_point, geom_line, geom_bar, ...**
+- stat (summarization/transformation of data): stat_smooth,
+- scale (map data values into computer values): scale_y_continuous(labels=percent), scale_x_log10, ...
+- facet: facet_wrap, facet_grid
+- fine tuning 
+    - coordinate: `coordinate_*`
+    - theme: `theme_bw`
+    - labels: `labs(x=..., y=...)`
+
+And you can add layers to your graph with `+`. See how we plot our histogram and add the normal curve on top of it
+```{r, eval=FALSE}
+hist.percent <- ggplot(californiatod, aes(x=density)) + 
+        geom_histogram(aes(y=(..count..)/sum(..count..))) + 
+        scale_y_continuous(labels=percent) + labs(y="")
+
+hist.percent + stat_function(fun=dnorm, args=list(mean=mean(californiatod$density), 
+                                                  sd=sd(californiatod$density)))
+```
+
+## Learning more
+- Wickham's [R4DS Chapter 3: Data Visualization](http://r4ds.had.co.nz/data-visualisation.html)
+- [ggplot2 cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
+- [ggplot2 cookbook](http://www.cookbook-r.com/Graphs/)
+
+# t-tests
+
+## Conduct single sample hypothesis test by hand
+
+We will now compute a **single sample hypothesis test** with a known mean by hand. We shall test whether the mean housing value in the TOD dataset is statistically significantly different from the mean of all housing on the market (assuming mean = 250000).
+
+The formular R uses for computing the test statistic is: 
+
+$$\frac{\bar{x} - \mu}{\frac{s}{\sqrt{n-1}}}$$
+
+1. Find the mean and standard deviation of the variable houseval:
+
+```{r}
+xbar <- mean(californiatod$houseval)
+mu <- 250000
+s <- sd(californiatod$houseval)
+n <- nrow(californiatod)
+```
+
+2. Now use R as a calculator to compute the t-statistic by hand. Enter the correct numerical values to compute this statement:
+
+`(sample_mean - population_mean)/(sample_sd/(square_root(n-1)))`
+
+
+Replace each term with the correct corresponding numerical value. Note that to designate a square root you can use **sqrt()**.
+
+```{r}
+tstar <- (xbar - mu)/(s/sqrt(n-1))
+tstar
+```
+
+3. You can get the p-value with
+
+```{r}
+p <- 2*pt(-abs(tstar), df = n-1)
+p
+```
+
+Question: What is the null hypothesis for this test? Should you reject the null hypothesis based on the p-value?
+
+## Compute the single sample t-test in R.
+
+```{r, warning=FALSE, message=FALSE}
+
+t.test(californiatod$houseval, alternative = 'two.sided', mu = 250000, conf.level = .95)
+
+```
+
+Compare the results to our hand calculations.
+
+
+## Conduct a group-mean t-test manually
+
+The formula R uses for computing the test statistics is:
+
+$$\frac{\bar{x_{1}} - \bar{x_{2}}}{\sqrt{\frac{s^2_{1}}{n_{1}}+ \frac{s^2_{2}}{n_2}}}$$
+
+1. Find the mean and standard deviation for the variable houseval
+
+```{r, warning=FALSE, message=FALSE}
+
+xbar1 <- with(californiatod, mean(houseval[railtype == "Light rail"]))
+
+xbar2 <- with(californiatod, mean(houseval[railtype == "Heavy or commuter rail"]))
+
+s1 <- with(californiatod, sd(houseval[railtype == "Light rail"]))
+
+s2 <- with(californiatod, sd(houseval[railtype == "Heavy or commuter rail"]))
+
+n1 <- with(californiatod, length(houseval[railtype == "Light rail"]))
+
+n2 <- with(californiatod, length(houseval[railtype == "Heavy or commuter rail"]))
+
+```
+
+2. Now use R as a calculator to compute the t-statistic by hand. Enter the correct numerical values to complete the formula:
+
+$$\frac{\bar{x_{1}} - \bar{x_{2}}}{\sqrt{\frac{s^2_{1}}{n_{1}}+ \frac{s^2_{2}}{n_2}}}$$
+
+Replace each term with the correct corresponding numerical value. Note that to designate a square root use the **sqrt()** function.
+
+```{r}
+tstar <- (xbar1 - xbar2)/ sqrt(s1^2/n1 + s2^2/n2)
+tstar
+```
+
+3. You can get the p-value for the two-sided test with
+
+```{r}
+p <- 2*pt(-abs(tstar), df =  pmin(n1, n2)-1)
+p
+
+```
+
+Theoretically the formula is not exactly appropriate for our small sample size, but for now it shall suffice. You can use this same equation for calculating the p-value in Assignment 2.
+
+## Compute the group means t-test with R
+
+The general syntax for the t-test in R is 
+
+> t.test(var1 ~ var2, data) 
+
+In this var1 is a continuous variable and var2 is a categorical variable.
+
+Execute the test by placing the proper variable names into the generic command (in this case *houseval* and *railtype*)
+
+```{r, warning=FALSE, message=FALSE}
+
+t.test(houseval ~ railtype, data = californiatod)
+
+```
+
+Can we reject the null hypothesis given these results?
+
+* The group-means t-test (like many statistical tests you will learn) measures the probability that the null hypothesis can be rejected. For a two-tailed test, the typical null hypothesis is that the population means are the same for two different groups. Rejecting the null is the same as concluding that the population means are different.
+
+* The null hypothesis is $H_{0}: diff = 0$, or in other words, there is not a difference in the mean density by railtype in the population  from which the sample is drawn. And the alternative hypothesis is "the true difference in means is not equal to 0"
+
+* R accepts arguments for alternative hypotheses and confidence levels. The alternative argument can be 'two-sided' for a two-tailed hypothesis (mean1 = mean2) as well as two one-tailed hypotheses ('greater' for mean1 > mean2, and 'less' for mean1 < mean2)
+
+## Two-sided versus one-sided
+
+By default, the **t.test()** function is a two-tailed test, i.e. the alternative hypothesis is that the difference in means is not equal to zero. Put another way, the alternative hypothesis is that there is a difference in average density between railtypes. We can switch to one-sided tests by changing the 'alternative' argument, an example follows
+
+```{r, warning=FALSE, message=FALSE}
+
+#Default t.test()
+t.test(houseval ~ railtype, data = californiatod, alternative = 'two.sided', conf.level = .95)
+
+#one sided t.test()
+
+t.test(houseval ~ railtype, data = californiatod, alternative = 'greater', conf.level = .95)
+```
+
+
+In order to get the p-value for one-sided t distribution
+
+> pt(-abs(tstar), df = length(californiatod) - 1)
+
+The output for the two-tailed test has a p-value of
+.001 and thus we would reject the null hypothesis that the difference between our group means in 0. 
+
+## Paired t-test
+
+Note that R also allows you to compute a **two-sample t-test**, appropriate in situations where you have "matched pairs" data available in separate variables. For example, in the Krizek paper we read this week, he tests whether the means of variables differ significantly pre and post-move (treatment). You can do a paired t-test in R!
+
+The general form of the syntax is:
+
+> t.test(var1, var2, data = Dataset, alternative = 'two.sided', conf.level = .95, paired = TRUE)
+
+This is the type of t-test you want to conduct for Question 4 in Assigment 2.
+
