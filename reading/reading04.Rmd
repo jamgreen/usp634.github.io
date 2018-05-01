@@ -1,0 +1,16 @@
+---
+title: "Week 3 Readings"
+output: 
+  html_document: 
+    theme: yeti
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Required:
+- Textbook
+    - [Diez, Ch 2-3](https://www.openintro.org/stat/textbook.php?stat_book=os)
+- Article
+    - []()
