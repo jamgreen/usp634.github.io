@@ -1,0 +1,17 @@
+---
+title: "Week 5 Readings"
+output: 
+  html_document: 
+    theme: yeti
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Required:
+- Textbook
+    - Diez Ch 5.5
+- Article
+    - [Ashby, J., W. A. Sadera and S. W. McNary, 2011. Comparing student success between developmental math courses
+offered online, blended, and face-to-face, Journal of Interactive Online Learning, Volume 10, Number 3](http://www.ncolr.org/jiol/issues/pdf/10.3.2.pdf)

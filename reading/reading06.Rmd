@@ -1,0 +1,16 @@
+---
+title: "Week 6 Readings"
+output: 
+  html_document: 
+    theme: yeti
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Required:
+- Textbook
+    - Diez Ch 5.1-4 (continued)
+- Article
+    - [Cohen, J. (1994). The world is round: p < .05. American Psychologist, 49, 997–1003](https://pdfs.semanticscholar.org/fa63/cbf9b514a9bc4991a0ef48542b689e2fa08d.pdf)

@@ -23,9 +23,13 @@ First, we will create a histogram for density and superimpose a curve on top of 
 
 ```{r, message=FALSE, warning=FALSE, fig.height=3}
 library(scales)
+hist.percent <- ggplot(californiatod, aes(x=density)) + 
+        geom_histogram(aes(y=..density.., group=1)) + 
+        scale_y_continuous(labels=percent)
+
 # show percentage
 hist.percent <- ggplot(californiatod, aes(x=density)) + 
-        geom_histogram(aes(y=(..count..)/sum(..count..))) + 
+        geom_histogram(aes(y=..density..)) + 
         scale_y_continuous(labels=percent) + labs(y="")
 hist.percent
 # with normal curve superimposed
@@ -40,7 +44,7 @@ Let's create a qqplot for the density and house value variables:
 
 ```{r, message=FALSE, warning=FALSE, fig.height=4}
 ggplot(californiatod, aes(sample=density)) +  
-  geom_qq() + geom_qq_line() + ylab("Density")  
+  geom_qq() + stat_qq_line() + ylab("Density")  
 
 ggplot(californiatod, aes(sample=houseval)) +  
   geom_qq() + geom_qq_line() + ylab("houseval")

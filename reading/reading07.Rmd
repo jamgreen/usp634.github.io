@@ -1,0 +1,16 @@
+---
+title: "Week 5 Readings"
+output: 
+  html_document: 
+    theme: yeti
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Required:
+- Textbook
+    - Diez Ch 6
+- Article
+    - [Spence, et al, 2007](http://journals.sagepub.com/doi/pdf/10.1177/0021934706296192)
