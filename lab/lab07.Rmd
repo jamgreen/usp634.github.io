@@ -29,9 +29,7 @@ eb_pums <- readRDS("eb_pums_2000.rds")
 We will recode some of the values in pums dataset so that we can run our tests later on. 
 
 ```{r, echo=TRUE, message=FALSE, warning=FALSE}
-
 library(dplyr)
-eb_pums <- readRDS("eb_pums_2000.rds")
 
 #Note: People of any race can also be Hispanic (Hispanic is not a race category), 
 #so when you recode Hispanics as ???4???, they will no longer be coded in the ???White,??? ???Black,??? or ???Asian??? categories. 
@@ -53,10 +51,10 @@ eb_pums <- eb_pums %>%
   mutate(
     tranwork = as.integer(tranwork),
     mode = case_when(
-      tranwork %in% c(1, 2) ~ "driving",
-      tranwork %in% c(10, 11, 12, 13, 14, 15) ~ "transit",
-      tranwork %in% c(16, 17) ~ "bike/walk",
-      tranwork %in% c(8, 18, 19) ~ "other",
+      tranwork %in% c(10, 20) ~ "driving",
+      tranwork %in% c(31, 32, 33, 34, 35, 36) ~ "transit",
+      tranwork %in% c(40, 50) ~ "bike/walk",
+      tranwork %in% c(60, 70) ~ "other",
       TRUE ~ as.character(NA)
     )
   )
@@ -122,6 +120,9 @@ summary(xtabs.TR)
 
 chisq.test(xtabs(~racehisp + mode, data = eb_pums, subset = !is.na(mode), drop.unused.levels = TRUE))
 chisq.test(xtabs.TR)
+
+# OR directly use the original variables
+chisq.test(eb_pums$racehis, eb_pums$mode)
 ```
 
 Are the differences in modes to work between racial and ethnic groups statistically significant?

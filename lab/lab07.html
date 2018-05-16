@@ -142,7 +142,6 @@ $(document).ready(function () {
 <h1><span class="header-section-number">1</span> Recoding Variables (Review)</h1>
 <p>We will recode some of the values in pums dataset so that we can run our tests later on.</p>
 <pre class="r"><code>library(dplyr)
-eb_pums &lt;- readRDS(&quot;eb_pums_2000.rds&quot;)
 
 #Note: People of any race can also be Hispanic (Hispanic is not a race category), 
 #so when you recode Hispanics as ???4???, they will no longer be coded in the ???White,??? ???Black,??? or ???Asian??? categories. 
@@ -164,10 +163,10 @@ eb_pums &lt;- eb_pums %&gt;%
   mutate(
     tranwork = as.integer(tranwork),
     mode = case_when(
-      tranwork %in% c(1, 2) ~ &quot;driving&quot;,
-      tranwork %in% c(10, 11, 12, 13, 14, 15) ~ &quot;transit&quot;,
-      tranwork %in% c(16, 17) ~ &quot;bike/walk&quot;,
-      tranwork %in% c(8, 18, 19) ~ &quot;other&quot;,
+      tranwork %in% c(10, 20) ~ &quot;driving&quot;,
+      tranwork %in% c(31, 32, 33, 34, 35, 36) ~ &quot;transit&quot;,
+      tranwork %in% c(40, 50) ~ &quot;bike/walk&quot;,
+      tranwork %in% c(60, 70) ~ &quot;other&quot;,
       TRUE ~ as.character(NA)
     )
   )</code></pre>
@@ -178,8 +177,8 @@ eb_pums &lt;- eb_pums %&gt;%
 <p>Cross tabs are one of the most basic and commonly used means to analyze categorical variables. We will crosstab two categorical variables and produce an analytical table using percentages. 1. First let’s simply get a table of mode. We will use the <strong>table()</strong> function.</p>
 <pre class="r"><code> table(eb_pums$mode)</code></pre>
 <pre><code>## 
-## transit 
-##   44304</code></pre>
+## bike/walk   driving     other   transit 
+##      1993     44456      2647      5512</code></pre>
 <p>Quick question: What does NA mean in our data? Quicker answer: The “universe” for this variable is all workers, and NA refers to all non-workers.</p>
 <p>Now we shall add our second categorical variable and finish our crosstabulation. We will crosstabe “mode” with “racehisp” (your recoded Race/Hispanic variable). We shall make the race/ethnicity categories our column headers and travel model our row labels. The general mode for getting a crosstabs is of the form:</p>
 <blockquote>
@@ -192,35 +191,35 @@ eb_pums &lt;- eb_pums %&gt;%
 
 xtabs.TR</code></pre>
 <pre><code>##                             mode
-## racehisp                     transit
-##   American Indian or Alaskan     279
-##   Asian                         7683
-##   Black                         4217
-##   Hispanic                      3804
-##   Other                         1589
-##   White                        26732</code></pre>
+## racehisp                     bike/walk driving other transit
+##   American Indian or Alaskan        17     279    16      33
+##   Asian                            333    7686   341    1019
+##   Black                            142    4227   198     935
+##   Hispanic                         212    3812   145     468
+##   Other                             91    1593   100     222
+##   White                           1198   26859  1847    2835</code></pre>
 <p><em>Add column percentages</em></p>
 <p>We have a nice proper crosstab but frequency counts are often not what we want. We are often interested in the different <em>proportions</em> of our categorical variables. So, to answer this we will calculate the percentages of worker mode of transit by race/ethnicity.</p>
 <pre class="r"><code>prop.table(xtabs(~ racehisp + mode, data = eb_pums, 
                  subset = !is.na(mode), drop.unused.levels = TRUE), 1)</code></pre>
 <pre><code>##                             mode
-## racehisp                     transit
-##   American Indian or Alaskan       1
-##   Asian                            1
-##   Black                            1
-##   Hispanic                         1
-##   Other                            1
-##   White                            1</code></pre>
+## racehisp                      bike/walk    driving      other    transit
+##   American Indian or Alaskan 0.04927536 0.80869565 0.04637681 0.09565217
+##   Asian                      0.03550485 0.81949035 0.03635782 0.10864698
+##   Black                      0.02580880 0.76826609 0.03598691 0.16993820
+##   Hispanic                   0.04571922 0.82208324 0.03127022 0.10092732
+##   Other                      0.04536391 0.79411765 0.04985045 0.11066800
+##   White                      0.03659244 0.82039769 0.05641590 0.08659397</code></pre>
 <pre class="r"><code>#Or if you saved the xtabs results in our object this also works
 prop.table(xtabs.TR, 1)</code></pre>
 <pre><code>##                             mode
-## racehisp                     transit
-##   American Indian or Alaskan       1
-##   Asian                            1
-##   Black                            1
-##   Hispanic                         1
-##   Other                            1
-##   White                            1</code></pre>
+## racehisp                      bike/walk    driving      other    transit
+##   American Indian or Alaskan 0.04927536 0.80869565 0.04637681 0.09565217
+##   Asian                      0.03550485 0.81949035 0.03635782 0.10864698
+##   Black                      0.02580880 0.76826609 0.03598691 0.16993820
+##   Hispanic                   0.04571922 0.82208324 0.03127022 0.10092732
+##   Other                      0.04536391 0.79411765 0.04985045 0.11066800
+##   White                      0.03659244 0.82039769 0.05641590 0.08659397</code></pre>
 <p>A crosstab with column percentages can be quite useful for our analyses. When you present this sort of table in a report be sure to include total “N” or frequency counts for each cell.</p>
 <p><strong>Question:</strong> Now that we have some results, which racial groups are most likely to use a car, truck, or van to get to work?</p>
 </div>
@@ -232,22 +231,29 @@ prop.table(xtabs.TR, 1)</code></pre>
 summary(xtabs.TR)</code></pre>
 <pre><code>## Call: xtabs(formula = ~racehisp + mode, data = eb_pums, subset = !is.na(mode), 
 ##     drop.unused.levels = TRUE)
-## Number of cases in table: 44304 
+## Number of cases in table: 54608 
 ## Number of factors: 2 
 ## Test for independence of all factors:
-##  Chisq = 8.69e-29, df = 0, p-value = 0</code></pre>
+##  Chisq = 502.5, df = 15, p-value = 1.656e-97</code></pre>
 <pre class="r"><code>chisq.test(xtabs(~racehisp + mode, data = eb_pums, subset = !is.na(mode), drop.unused.levels = TRUE))</code></pre>
 <pre><code>## 
-##  Chi-squared test for given probabilities
+##  Pearson's Chi-squared test
 ## 
 ## data:  xtabs(~racehisp + mode, data = eb_pums, subset = !is.na(mode),     drop.unused.levels = TRUE)
-## X-squared = 65187, df = 5, p-value &lt; 2.2e-16</code></pre>
+## X-squared = 502.52, df = 15, p-value &lt; 2.2e-16</code></pre>
 <pre class="r"><code>chisq.test(xtabs.TR)</code></pre>
 <pre><code>## 
-##  Chi-squared test for given probabilities
+##  Pearson's Chi-squared test
 ## 
 ## data:  xtabs.TR
-## X-squared = 65187, df = 5, p-value &lt; 2.2e-16</code></pre>
+## X-squared = 502.52, df = 15, p-value &lt; 2.2e-16</code></pre>
+<pre class="r"><code># OR directly use the original variables
+chisq.test(eb_pums$racehis, eb_pums$mode)</code></pre>
+<pre><code>## 
+##  Pearson's Chi-squared test
+## 
+## data:  eb_pums$racehis and eb_pums$mode
+## X-squared = 502.52, df = 15, p-value &lt; 2.2e-16</code></pre>
 <p>Are the differences in modes to work between racial and ethnic groups statistically significant?</p>
 </div>
 
