@@ -36,8 +36,7 @@ library(dplyr)
 eb_pums <- eb_pums %>% mutate(
   race=as.character(race), 
   hispan=as.character(hispan),
-  racehisp=case_when(
-                     race=="Chinese" ~ "Asian", 
+  racehisp=case_when(race=="Chinese" ~ "Asian", 
                      race=="Japanese" ~ "Asian", 
                      race=="Other Asian or Pacific" ~ "Asian",
                      race=="White" ~ "White", 
@@ -46,7 +45,7 @@ eb_pums <- eb_pums %>% mutate(
                      hispan != "Not Hispanic" ~ "Hispanic",
                      TRUE~"Other"))
 
-# recode modes
+# recode modes (https://usa.ipums.org/usa-action/variables/TRANWORK#codes_section)
 eb_pums <- eb_pums %>%
   mutate(
     tranwork = as.integer(tranwork),

@@ -1,0 +1,216 @@
+---
+title: "USP 634 Lab8- ANOVA"
+author: "Jamaal Green and Liming Wang"
+output:
+  html_document:
+    toc: true
+    self_contained: true
+    number_sections: true
+    
+---
+
+# Data Preparation
+
+Data File
+
+- [eb_pums_2000.RDS](eb_pums_2000.rds)
+
+Apply the recodes we did in lab 7 to the dataset using the syntax below. 
+
+```{r, warning=FALSE, message=FALSE}
+#remember to set your working director
+eb_pums <- readRDS("eb_pums_2000.rds")
+
+```
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+library(dplyr)
+
+eb_pums <- eb_pums %>% select(year, metaread, puma, 
+                        ownershp, builtyr, hhincome, 
+                        perwt, age, sex, race, hispan, 
+                        tranwork, carpool, trantime)
+
+
+
+#Note: People of any race can also be Hispanic (Hispanic is not a race category), 
+#so when you recode Hispanics as ???4???, they will no longer be coded in the ???White,??? ???Black,??? or ???Asian??? categories. 
+#Rename a variable: metaread to detailed.meta.area
+names(eb_pums)[2] <- 'detailed.meta.area'
+
+eb_pums <- eb_pums %>% mutate(
+  race=as.character(race), 
+  hispan=as.character(hispan),
+  racehisp=case_when(
+                     race=="Chinese" ~ "Asian", 
+                     race=="Japanese" ~ "Asian", 
+                     race=="Other Asian or Pacific" ~ "Asian",
+                     race=="White" ~ "White", 
+                     race=="Black" ~ "Black", 
+                     race=="American Indian or Alaskan" ~ "American Indian or Alaskan", 
+                     hispan != "Not Hispanic" ~ "Hispanic",
+                     TRUE~"Other"))
+
+table(eb_pums$racehisp)
+
+# recode modes (https://usa.ipums.org/usa-action/variables/TRANWORK#codes_section)
+eb_pums <- eb_pums %>%
+  mutate(
+    tranwork = as.integer(tranwork),
+    mode = case_when(
+      tranwork %in% c(10, 11, 12, 13, 14, 15, 20) ~ "driving",
+      tranwork %in% c(30, 31, 32, 33, 34, 35, 36) ~ "transit",
+      tranwork %in% c(40, 50) ~ "bike/walk",
+      tranwork %in% c(60, 70) ~ "other",
+      TRUE ~ as.character(NA)
+    )
+  )
+
+table(eb_pums$mode)
+
+# recode modes (https://usa.ipums.org/usa-action/variables/TRANWORK#codes_section)
+eb_pums <- eb_pums %>%
+  mutate(
+    builtyr2 = case_when(
+      as.integer(builtyr) %in% c(2, 3) ~ "0-10",
+      as.integer(builtyr) == 4 ~ "11-20",
+      as.integer(builtyr) == 5 ~ "21-30",
+      as.integer(builtyr) == 6 ~ "31-40",
+      as.integer(builtyr) == 7 ~ "41-50",
+      as.integer(builtyr) == 8 ~ "51-60",
+      as.integer(builtyr) == 9 ~ "61+"
+    )
+  )
+
+table(eb_pums$builtyr2)
+
+## Recode income and tenure
+
+eb_pums <- eb_pums %>%
+  mutate(
+    increc = ifelse(eb_pums$hhincome <=0 | eb_pums$hhincome >= 999999, NA, hhincome),
+    tenure = recode(ownershp, `1`="Owned", `2`="Rented", .default=as.character(NA))
+  )
+
+
+table(eb_pums$tenure)
+
+# Save your recoded data frame 
+saveRDS(eb_pums, file="eb_pums_2000_recoded.rds")
+```
+
+```{r, warning=FALSE, message=FALSE}
+# keep 2 decimal places in output
+options(digits=2)
+
+#Cross-tabulate means of travel to work by race/ethnicity
+xtabs(~mode+racehisp, data=eb_pums, subset=!is.na(mode), drop.unused.levels=T)
+
+#assign cross-tab to a variable
+xtabs.TR <- xtabs(~mode+racehisp, data=eb_pums, subset=!is.na(mode), drop.unused.levels=T)
+
+xtabs.TR
+
+#Get column %
+prop.table(xtabs(~mode+racehisp,data=eb_pums,subset=!is.na(mode), drop.unused.levels=T), 2)
+#OR 
+prop.table(xtabs.TR, 2)
+
+#results of chi-square test of independence
+summary(xtabs.TR)
+#alternatively
+```
+
+
+# Boxplot by group
+
+We will create a boxplot of trantime by racehisp using the *ggplot2* package.
+
+```{r, message=FALSE, warning=FALSE}
+require(ggplot2)
+
+ggplot(eb_pums, aes(x = mode, y = trantime)) + geom_boxplot()
+```
+
+# ANOVA
+
+Now we will conduct an ANOVA test using the PUMS dataset in order to determine whether commuting travel time (trantime) varies significantly by race/Hispanic origin- i.e. we will test the likielihood that the sample data come from a population in which personal income does not vary between racial/ethnic categories. 
+
+## Conduct ANOVA test
+
+Recall that for ANOVA to work, we need the groups to be of equal size and equal variance. We can check the group size with a bar chart and the variances by group.
+
+```{r, warning=FALSE, message=FALSE}
+#for our frequency bar chart
+ggplot(eb_pums, aes(x = racehisp)) + geom_bar()
+```
+
+```{r, warning=FALSE, message=FALSE}
+#for our variance by group
+sdbygroup <- eb_pums %>% group_by(racehisp) %>%
+  summarize(std_dev = sd(trantime))
+
+sdbygroup
+```
+
+Since non-Hispanic Whites outnumber many of the other racial/ethnic groups we will limit the test to only three groups: Black non-Hispanic, Asian non-Hispanic, and Hispanic. Let's create a subset for the three groups.
+
+```{r, message=FALSE, warning=FALSE}
+# dplyr approach
+eb_pums.sub <- eb_pums %>% 
+  filter(racehisp %in% c("Hispanic", "Black", "Asian"))
+
+#check
+table(eb_pums.sub$racehisp)
+
+
+# base r approach
+#eb_pums.sub <-eb_pums[eb_pums$racehisp %in% c("Hispanic", "Black non-Hisp", "Asian non-Hisp"),]
+
+# Recreate the bar chart
+ggplot(eb_pums.sub, aes(racehisp)) + geom_bar()
+```
+
+Now that we have similar sample sizes we have met the assumptions for conducting an ANOVA.
+
+What are the other critical assumptions of ANOVA again?
+
+As with all things R there are many ways of conducting an ANOVA. We will use the *aov* function as one approach. The formula for ANOVA follows the general form of:
+
+> aov(dependent variable ~ grouping variable, data = df)
+
+The dependent variable is on the left side of ~ while the independent variable (the variable we are looking to test whether or not there is a difference between its groups) is on the other side. 
+
+```{r, warning=FALSE, message=FALSE}
+
+mod1 <- aov(trantime ~ racehisp, data = eb_pums.sub)
+
+summary(mod1)
+```
+
+Examine the outputs in the ANOVA table, and determine whether to reject the null hypothesis. Zero in on the F-statistics, and its probability value (and significance codes); this indicates the probability that the null hypothesis can be rejected.
+
+## Pairwise comparison of means
+
+For the pairwise comparison of means we will use the *pairwise.t.test()* function. Are the differences from other groups significant? What is the adjustment using the Bonferroni correction for multiple comparisons. The general form of the pairwise test function is this:
+
+> pairwise.t.test(dependent var, independent var, p.adj = c("none", "bonferroni", "holm"))
+
+```{r, message=FALSE, warning=FALSE}
+pairwise.t.test(eb_pums.sub$trantime , eb_pums.sub$racehisp, p.adj = "bonferroni")
+```
+
+Quick question: Conduct an ANOVA test in order to determine whether personal income (increc) varies significantly by race/Hispanic origin. 
+
+##Test of Equal Variances
+
+We can use hypothesis testing to test whether groups have equal variance. One such test is Levene's Equality of Variance Test. Levene's test estimates a hypothesis test on whether the variances of your groups are equal. Thus the the null hypothesis is that the variances are in fact equal. What does this mean for our alternative hypothesis?
+
+```{r, message=FALSE, warning=FALSE}
+#install car package if you don't have it
+# install.packages("car")
+library(car)
+#running Leven's Equality of Variance
+leveneTest(trantime ~ racehisp, data = eb_pums.sub,
+  center = "mean")
+```
