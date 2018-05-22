@@ -9,6 +9,10 @@ output:
     
 ---
 
+# Statistic Cheat Sheet
+
+[Statistic Cheat Sheet by Jennifer Morgen](http://people.stfx.ca/jmorgen/290/CheatSheets/STATS%20CHEAT%20SHEET%20390.doc)
+
 # Data Preparation
 
 Data File
