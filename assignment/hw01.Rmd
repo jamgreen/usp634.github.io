@@ -1,0 +1,8 @@
+---
+title: "HW1"
+output: html_document
+---
+
+
+- Instructions: [hw01.pdf](hw01.pdf)
+- [Sample solutions by Alice Brawley-Chesworth](HW1_sample_Alice Brawley-Chesworth.pdf)
