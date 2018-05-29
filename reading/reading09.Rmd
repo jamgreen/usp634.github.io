@@ -13,4 +13,5 @@ knitr::opts_chunk$set(echo = TRUE)
 - Textbook
     - Diez Ch 7.1-4 
 - Article
+    - [Kishore, N., Marqués, D., Mahmud, A., Kiang, M. V., Rodriguez, I., Fuller, A., … Buckee, C. O. (2018). Mortality in Puerto Rico after Hurricane Maria. New England Journal of Medicine](https://www.nejm.org/doi/full/10.1056/NEJMsa1803972)
     - [Frank, L. D., Sallis, J. F., Conway, T. L., Chapman, J. E., Saelens, B. E., & Bachman, W. (2006). Many Pathways from Land Use to Health: Associations between Neighborhood Walkability and Active Transportation, Body Mass Index, and Air Quality. Journal of the American Planning Association, 72(1), 75–87.](https://doi.org/10.1080/01944360608976725)
