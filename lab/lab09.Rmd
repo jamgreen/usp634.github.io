@@ -1,0 +1,257 @@
+---
+title: "USP 634 Lab 9 - Association and Linear Regression"
+author: "Jamaal Green and Liming Wang"
+output:
+  html_document:
+    toc: true
+    self_contained: true
+    number_sections: true
+---
+
+# Learning Objectives
+
+* Review basics for analyzing data with R
+* Review basics for determining which analytical technique to use with which variable types
+* Learn commands for lambda, Gamma, and Pearson's r measures of association
+* Learn to do regression analysis in R
+* Interpret regression outputs
+* Standardized regression coefficients (beta weights)
+* Download (to your RStudio project directory) and source the [recode_vars.R](recode_vars.R) script to recode your eb_pums dataset
+
+# Open and prepare data in R
+
+Load the eb_pums data and recode as we've done before in prior labs (if feeling adventurous try to use the *source()* function to run an independent recode script). 
+
+```{r, warning=FALSE, message=FALSE}
+#remember to set your working director
+eb_pums <- readRDS("eb_pums_2000.rds")
+
+source("recode_vars.R")
+```
+
+# Review of Basic Techniques for Analyzing Variables by Type
+
+Some basic procedures for analyzing variables by type
+
+* Find basic info about dataset
+    + use the **summary()** function in order to get a set of basic descriptive statistics 
+    + use the **str()** function to see the underlying structure of your dataset including names of variables, data type etc
+
+* Look at data case by case
+    + we could simply type eb_pums into our console and have R print out the entire dataset but this is ridiculous for larger datasets. So we will pick out particular cases.
+
+* Subset a data set
+    + We can limit our the number of cases viewed by column
+
+        `eb_pums %>% select(age, sex, racehisp)`
+        
+    + We can look at the first and last few rows of our data by using the **head()** and **tail()** functions
+    + We could also look at our data using conditional statements
+
+
+        `eb_pums %>% filter(sex == 2) %>% select(age, racehisp)`
+
+
+         `pums.sub <- eb_pums %>% filter(racehisp %in% c("Hispanic", "Black non-Hisp", "Asian non-Hisp"))`
+
+## Analyze categorical (factor) variables
+    - Frequency distributions and bar graphs are two general categorical analysis/visualization approaches
+    - Contingency tables: the **xtabs** or **table** functions are commands used to analyze the relationship between two categorical variables. 
+    - If we want to look at the columns percentages we would use the **prop.table** function
+    - Quick question: what is the appropriate significance test when comparing categorical variables?
+
+## Analyze numeric variables
+    - use **summary** to get basic descriptive stats
+    - histograms are a major tool in looking at the distribution of numeric variables
+    - Association (using the **cov** function) and scatterplots are our primary tools for examining the relationship between two or more numeric variables
+
+## Combine categorical (factor) and numeric variables
+    - when examining categorical and continuous variables we have to group by our categorical variables. We have multiple ways to perform group operations ranging from **tapply** functions to the *doBy* package. We've also covered the *dplyr* **group_by** function: `pums %>% group_by(racehisp) %>% summarize(avginc = mean(increc),medinc = median(increc))`
+
+## Ordinal variables 
+
+Ordinal variables fall in-between categorical and numeric variables.  This particularly matters for how we treat their values in terms of analysis and visualization. 
+    - For example, we have a survey response with a five point Likert scale (1-5). How should we examine this? Since the variable has only 5 values, the **xtabs** command may be appropriate as you can get frequency counts and percentages using the **prop.table** function. But we could also use the summary command if we were interested in say the mean response for a particular answer. 
+        
+# Measures of Association
+
+## Racial/Ethnic identity and mode of work
+
+First, what are the types of variables we're discussing here? What sort of analysis would be appropriate?
+
+1. Examine the data to prepare for the test
+    + Make a table for the race/ethnicity variable *racehisp* and for the mode-to-work variable *mode*
+    + Which variable should be considered the independent variable? That variable should be the **row** variable for our contingency table.
+
+`xtabs(~mode+racehisp, data = eb_pums, drop.unused.levels= T)`
+    + Save xtabs results to a new object
+        
+
+`mode.race <- xtabs(~mode+racehisp, data = eb_pums, drop.unused.levels= T)`
+    + Now find the percentages using **prop.table**
+
+2. Based on these results what is the association between race and mode-to-work?
+3. Now test the significance and strength of the relationship between racehisp and mode-to-work. [for this use a chi-square test]
+
+ `chisq.test(mode.race)`
+
+4.  Is the relationship statisitcally significant?
+5.  How strong is the relationship? Which test statistic tells you?
+
+
+```{r, include=FALSE}
+
+mode.race <- xtabs(~mode+racehisp, data = eb_pums, drop.unused.levels= T)
+```
+
+```{r, message=FALSE, warning=FALSE}
+
+chisq.test(mode.race)
+```       
+
+4. Calculate **lambda** to gauge the strength of the relationship
+    + Install and load the Visualizing Categorical Data Package, then enter `assocstats(mode.race)`
+
+```{r, warning=FALSE, message=FALSE}
+install.packages("vcd", repos='http://cran.us.r-project.org' )
+install.packages("vcdExtra", repos = 'http://cran.us.r-project.org' )
+library(vcd)
+library(vcdExtra)
+
+assocstats(mode.race)
+```
+
+    + What do these results indicate about the strength of the relationship?
+  
+## Age of Housing and Household Income of Residents
+
+Recode household income into 3 categories: 
+```{r, warning=FALSE, message=FALSE}
+eb_pums$hinc4 <- cut(eb_pums$increc, breaks=4, labels=c("1st Quantile",
+"2nd Quantile", "3rd Quantile", "4th Quantile"))
+```
+        
+Next, lets assess the relationship between the ago of housing (by decade) and household income of the residents (by quintiles).
+
+* What types of variables are these-- age of housing (by decade) and household income of residents (by quintiles)? What sort of analysis is appropriate?
+
+* Examine/prepare data for your test. Create a contingency table for housing age and household income and calculate their percentages. Then calculate the gamma.
+
+```{r, warning=FALSE, message=FALSE}
+
+builtyr.hinc <- xtabs(~eb_pums$builtyr2 + eb_pums$hinc4)
+
+GKgamma(builtyr.hinc)
+```
+
+## Household income and commuting time
+
+Now, consider the association between household income and commuting time. What are these two variables? What is an appropriate measure of association?
+
+* Create a scatterplot for household income (increc) and commuting time (trantime)
+* Caluclate the association between the two variables
+
+```{r, message=FALSE, warning=FALSE}
+
+cor(eb_pums %>% select(increc, trantime), use="complete", method="pearson")
+```
+
+# Regression
+
+1. Research Questions: For this exercise we shall investigate the factors influencing commuting time (trantime) in the eb_pums dataset. Our dependent (response) variable is commuting time (trantime), while our independent (predictor, explanatory) variables are: increc and racehisp. 
+2. Explore and Plot the Data 
+    1. Let's create scatterplots for trantime v. increc
+
+```{r, warning=FALSE,message=FALSE}
+
+#install.packages("ggplot2", repos = "http://cran.r-project.org")
+library(ggplot2)
+
+#increc vs trantime
+ggplot(eb_pums, aes(x = increc, y = trantime)) + geom_point()
+
+
+```
+    
+    2. Now, let's create boxplots by groups for trantime and racehisp
+
+```{r, warning=FALSE, message=FALSE}
+#racehisp v trantime
+ggplot(eb_pums, aes(x = racehisp, y = trantime)) + geom_boxplot()
+```
+
+2. Building out our model
+   1. Start with a univariate regression between trantime and income:
+```{r, message=FALSE, warning=FALSE}
+#We will use the lm() function for our linear modeling
+
+RegMod1 <- lm(trantime ~ increc, data = eb_pums)
+summary(RegMod1)
+```
+
+What do our results tell us? Now run this again using the racehisp variable?
+
+  2. Now let's try our model out using the categorical variables railtype and region
+  
+```{r, message=FALSE, warning=FALSE}
+RegMod2 <- lm(trantime ~ racehisp, data = eb_pums)
+summary(RegMod2)
+```
+
+Recall that this is a so-called "fixed effects" dummy variable. How should we interpret the coefficient for our categorical  variable?
+
+  3. You can try to estimate a parsimonious model with the highest adjusted $R^2$ by adding independent variables to your model
+  
+```{r, warning=FALSE, message=FALSE}
+
+finalmod <- lm(trantime ~ increc + racehisp, data = eb_pums)
+summary(finalmod)
+```
+
+See if you can get an interaction effect between a dummy variable and a continuous variable (or another dummy variable).
+
+   4. Model Diagnostics - use the **plot()** function on your model and look at the diagnostic plots. What do they tell us about our model?
+   
+   5. Finally, conduct a "reasonableness" test against initial theories/postulates and derive the policy implications.
+  
+   6. Estimating regressions can answer many questions for us, such as:
+       1. What is the direction of the relationship between our dependent variable and our independent variables.
+       2. Are the partial slopes statistically significant? Check the t-scores and probability for each coefficient to find out
+       3. You can get a confidence interval for each slope by using:
+         `confint(finalmod)`
+       4. Finally, we can determine how well are independent variables predict the values of our dependent variables. What does our $R^2$ tell us? Is it statistically significant? Check the F statistics and its probability
+       
+## Beautify model estimation output
+
+You can use R package such as *stargazer* and *texreg* to beautify your model estimation results
+
+```{r, warning=FALSE, message=FALSE, results='asis'}
+install.packages("texreg", repos = "http://cran.r-project.org")
+library(texreg)
+screenreg(finalmod)
+# or
+htmlreg(finalmod)
+```
+
+## Beta Weights
+You may wonder about the relative influence of each partial slope. To determine this, you need to convert the output to a standardized regression equation, with standardized partial slopes (aka **beta weights**). To do this we will use the *lm.beta* package.
+
+```{r, message=FALSE, warning=FALSE}
+
+install.packages("lm.beta", repos = "http://cran.r-project.org")
+library(lm.beta)
+
+summary(lmbetamod <- lm.beta(finalmod))
+
+```
+
+```{r, message=FALSE, warning=FALSE, results='asis'}
+install.packages("stargazer", repos = "http://cran.r-project.org")
+library(stargazer)
+stargazer(finalmod, lmbetamod, column.labels=c("base", "standardized beta"), 
+          coef=list(finalmod$coefficients, lmbetamod$standardized.coefficients), type="html")
+```
+
+Alternatively, if all your variables are numeric, you can first scale the variables and the re-run the regression.
+
+Assuming a causal relationship, which independent variable exerts the most influence on trantime?

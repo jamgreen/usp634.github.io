@@ -1,0 +1,42 @@
+---
+title: 'USP 634 Class Project Presentation'
+output: 
+  html_document:
+    toc: true
+---
+
+## Contents
+Your class project presentation should include all the major components of your final paper:
+
+1.	**Background, research problem/questions, research hypotheses**: Describe the background of your research project, drawing from existing research or from practical sources, set up your research problem/questions and their significance (why it is worthy of investigation & why people should care), and from your research questions formulate your hypotheses;
+
+2.	**Data sources, descriptive stats of key variables**: Describe the basic information of the data set(s) of your project - sources, vintage, variables (information) included, and appropriate descriptive stats with tables and charts of the key variables of interest;
+
+3.	**Results of appropriate inferential analysis of hypotheses**: present results of the relevant inferential stats you conduct to test your research hypotheses;
+
+4.	**Conclusion, implications, & discussion**: Conclude your presentation with a summary of your decisions regarding the research hypotheses based on your inferential stats, the implications of your analysis, and finally a discussion of the limitations of your data and analysis and/or future work.
+
+## Length
+Your presentation should be no more than 15 minutes, followed by 5 minutes for questions and answers.
+
+## Schedule
+Please upload your slides to D2L (or share a link if you use Google Slides) by noon of your scheduled presentation date.
+
+### Tue, 6/5
+1. Maryam
+1. Ansel
+1. Zhong
+1. Dana
+1. Jennifer M.
+1. Sarah
+1. Henry
+
+### Tue, 6/12
+1. Alice
+1. Jordan
+1. Nick
+1. Shen
+1. Jennifer R.
+1. Baxter
+1. Aliza
+1. Qingyang	
