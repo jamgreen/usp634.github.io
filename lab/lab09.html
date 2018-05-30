@@ -154,7 +154,7 @@ $(document).ready(function () {
 <li>Learn to do regression analysis in R</li>
 <li>Interpret regression outputs</li>
 <li>Standardized regression coefficients (beta weights)</li>
-<li>Download (to your current working directory) and source the <a href="recode_vars.R" class="uri">recode_vars.R</a> script to recode your eb_pums dataset</li>
+<li>Download (to your RStudio project directory) and source the <a href="recode_vars.R" class="uri">recode_vars.R</a> script to recode your eb_pums dataset</li>
 </ul>
 </div>
 <div id="open-and-prepare-data-in-r" class="section level1">
@@ -185,29 +185,38 @@ source(&quot;recode_vars.R&quot;)</code></pre>
 <li>We can look at the first and last few rows of our data by using the <strong>head()</strong> and <strong>tail()</strong> functions</li>
 <li><p>We could also look at our data using conditional statements</p>
 <p><code>eb_pums %&gt;% filter(sex == 2) %&gt;% select(age, racehisp)</code></p>
-<p><code>pums.sub &lt;- eb_pums %&gt;% filter(racehisp %in% c(&quot;Hispanic&quot;, &quot;Black non-Hisp&quot;, &quot;Asian non-Hisp&quot;))</code></p></li>
+<p><code>pums.sub &lt;- eb_pums %&gt;% filter(racehisp %in% c(&quot;Hispanic&quot;, &quot;Black&quot;, &quot;Asian&quot;))</code></p></li>
 </ul></li>
 </ul>
 <div id="analyze-categorical-factor-variables" class="section level2">
 <h2><span class="header-section-number">3.1</span> Analyze categorical (factor) variables</h2>
-<pre><code>- Frequency distributions and bar graphs are two general categorical analysis/visualization approaches
-- Contingency tables: the **xtabs** or **table** functions are commands used to analyze the relationship between two categorical variables. 
-- If we want to look at the columns percentages we would use the **prop.table** function
-- Quick question: what is the appropriate significance test when comparing categorical variables?</code></pre>
+<ul>
+<li>Frequency distributions and bar graphs are two general categorical analysis/visualization approaches</li>
+<li>Contingency tables: the <strong>xtabs</strong> or <strong>table</strong> functions are commands used to analyze the relationship between two categorical variables.</li>
+<li>If we want to look at the columns percentages we would use the <strong>prop.table</strong> function</li>
+<li>Quick question: what is the appropriate significance test when comparing categorical variables?</li>
+</ul>
 </div>
 <div id="analyze-numeric-variables" class="section level2">
 <h2><span class="header-section-number">3.2</span> Analyze numeric variables</h2>
-<pre><code>- use **summary** to get basic descriptive stats
-- histograms are a major tool in looking at the distribution of numeric variables
-- Association (using the **cov** function) and scatterplots are our primary tools for examining the relationship between two or more numeric variables</code></pre>
+<ul>
+<li>use <strong>summary</strong> to get basic descriptive stats</li>
+<li>histograms are a major tool in looking at the distribution of numeric variables</li>
+<li>Association (using the <strong>cov</strong> function) and scatterplots are our primary tools for examining the relationship between two or more numeric variables</li>
+</ul>
 </div>
 <div id="combine-categorical-factor-and-numeric-variables" class="section level2">
 <h2><span class="header-section-number">3.3</span> Combine categorical (factor) and numeric variables</h2>
-<pre><code>- when examining categorical and continuous variables we have to group by our categorical variables. We have multiple ways to perform group operations ranging from **tapply** functions to the *doBy* package. We've also covered the *dplyr* **group_by** function: `pums %&gt;% group_by(racehisp) %&gt;% summarize(avginc = mean(increc),medinc = median(increc))`</code></pre>
+<ul>
+<li>when examining categorical and continuous variables we have to group by our categorical variables. We have multiple ways to perform group operations ranging from <strong>tapply</strong> functions to the <em>doBy</em> package. We’ve also covered the <em>dplyr</em> <strong>group_by</strong> function: <code>pums %&gt;% group_by(racehisp) %&gt;% summarize(avginc = mean(increc),medinc = median(increc))</code></li>
+</ul>
 </div>
 <div id="ordinal-variables" class="section level2">
 <h2><span class="header-section-number">3.4</span> Ordinal variables</h2>
-<p>Ordinal variables fall in-between categorical and numeric variables. This particularly matters for how we treat their values in terms of analysis and visualization. - For example, we have a survey response with a five point Likert scale (1-5). How should we examine this? Since the variable has only 5 values, the <strong>xtabs</strong> command may be appropriate as you can get frequency counts and percentages using the <strong>prop.table</strong> function. But we could also use the summary command if we were interested in say the mean response for a particular answer.</p>
+<p>Ordinal variables fall in-between categorical and numeric variables. This particularly matters for how we treat their values in terms of analysis and visualization.</p>
+<ul>
+<li>For example, we have a survey response with a five point Likert scale (1-5). How should we examine this? Since the variable has only 5 values, the <strong>xtabs</strong> command may be appropriate as you can get frequency counts and percentages using the <strong>prop.table</strong> function. But we could also use the summary command if we were interested in say the mean responses.</li>
+</ul>
 </div>
 </div>
 <div id="measures-of-association" class="section level1">

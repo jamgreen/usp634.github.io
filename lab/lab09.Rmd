@@ -52,26 +52,26 @@ Some basic procedures for analyzing variables by type
         `eb_pums %>% filter(sex == 2) %>% select(age, racehisp)`
 
 
-         `pums.sub <- eb_pums %>% filter(racehisp %in% c("Hispanic", "Black non-Hisp", "Asian non-Hisp"))`
+         `pums.sub <- eb_pums %>% filter(racehisp %in% c("Hispanic", "Black", "Asian"))`
 
 ## Analyze categorical (factor) variables
-    - Frequency distributions and bar graphs are two general categorical analysis/visualization approaches
-    - Contingency tables: the **xtabs** or **table** functions are commands used to analyze the relationship between two categorical variables. 
-    - If we want to look at the columns percentages we would use the **prop.table** function
-    - Quick question: what is the appropriate significance test when comparing categorical variables?
+- Frequency distributions and bar graphs are two general categorical analysis/visualization approaches
+- Contingency tables: the **xtabs** or **table** functions are commands used to analyze the relationship between two categorical variables. 
+- If we want to look at the columns percentages we would use the **prop.table** function
+- Quick question: what is the appropriate significance test when comparing categorical variables?
 
 ## Analyze numeric variables
-    - use **summary** to get basic descriptive stats
-    - histograms are a major tool in looking at the distribution of numeric variables
-    - Association (using the **cov** function) and scatterplots are our primary tools for examining the relationship between two or more numeric variables
+- use **summary** to get basic descriptive stats
+- histograms are a major tool in looking at the distribution of numeric variables
+- Association (using the **cov** function) and scatterplots are our primary tools for examining the relationship between two or more numeric variables
 
 ## Combine categorical (factor) and numeric variables
-    - when examining categorical and continuous variables we have to group by our categorical variables. We have multiple ways to perform group operations ranging from **tapply** functions to the *doBy* package. We've also covered the *dplyr* **group_by** function: `pums %>% group_by(racehisp) %>% summarize(avginc = mean(increc),medinc = median(increc))`
+- when examining categorical and continuous variables we have to group by our categorical variables. We have multiple ways to perform group operations ranging from **tapply** functions to the *doBy* package. We've also covered the *dplyr* **group_by** function: `pums %>% group_by(racehisp) %>% summarize(avginc = mean(increc),medinc = median(increc))`
 
 ## Ordinal variables 
-
 Ordinal variables fall in-between categorical and numeric variables.  This particularly matters for how we treat their values in terms of analysis and visualization. 
-    - For example, we have a survey response with a five point Likert scale (1-5). How should we examine this? Since the variable has only 5 values, the **xtabs** command may be appropriate as you can get frequency counts and percentages using the **prop.table** function. But we could also use the summary command if we were interested in say the mean response for a particular answer. 
+
+- For example, we have a survey response with a five point Likert scale (1-5). How should we examine this? Since the variable has only 5 values, the **xtabs** command may be appropriate as you can get frequency counts and percentages using the **prop.table** function. But we could also use the summary command if we were interested in say the mean responses. 
         
 # Measures of Association
 
