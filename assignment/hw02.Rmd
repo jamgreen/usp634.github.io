@@ -8,3 +8,4 @@ output: html_document
 - Data files (Question 4):
     - [views.csv](views.csv)
     - [views_excel.xls](views_excel.xls)
+- [Sample solutions by Dana](HW2_Sample_by_Dana.pdf)
